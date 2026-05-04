@@ -1,14 +1,57 @@
 import { useState, useRef, useEffect } from "react";
-import { EXERCISES, catLabel, CAT_ES_TO_EN } from "./data/exercises";
+import { EXERCISES, catLabel } from "./data/exercises";
 import { S, QUESTIONS, CATEGORY_KEYS } from "./data/strings";
+
+function useIsMobile() {
+  const [w, setW] = useState(() => window.innerWidth);
+  useEffect(() => {
+    const h = () => setW(window.innerWidth);
+    window.addEventListener("resize", h);
+    return () => window.removeEventListener("resize", h);
+  }, []);
+  return w < 640;
+}
+
+// ─── PERSISTENCE ──────────────────────────────────────────────────────────────
+const STORAGE_KEY = "mobility_routine";
+
+function todayKey() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function saveRoutine(answers, exercises) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      date: todayKey(),
+      answers,
+      exerciseIds: exercises.map(e => e.id),
+    }));
+  } catch {}
+}
+
+function loadTodayRoutine() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (data.date !== todayKey()) return null;
+    const exercises = data.exerciseIds
+      .map(id => EXERCISES.find(e => e.id === id))
+      .filter(Boolean);
+    return exercises.length ? { answers: data.answers, exercises } : null;
+  } catch { return null; }
+}
+
+function clearRoutine() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch {}
+}
 
 // ─── RECOMMENDATION ENGINE ────────────────────────────────────────────────────
 const TIME_BUDGETS = { rapida: 600, estandar: 900, larga: 1500, completa: 2700 };
 
 function recommend(answers) {
   const flat = Object.values(answers).flat();
-  const budgetKey = (answers.time || [])[0];
-  const budget = TIME_BUDGETS[budgetKey] ?? 900;
+  const budget = TIME_BUDGETS[(answers.time || [])[0]] ?? 900;
 
   const scored = EXERCISES.map(ex => {
     if (ex.contraindications.some(c => flat.includes(c))) return { ...ex, score: -1 };
@@ -26,7 +69,6 @@ function recommend(answers) {
 
   const pool = scored.filter(e => e.score > 0).sort((a, b) => b.score - a.score);
 
-  // Greedy selection: respect time budget + max 2 per category per pass
   const selected = [];
   let remaining = budget;
   const catCount = {};
@@ -64,25 +106,17 @@ function YouTubeEmbed({ videoId, color }) {
         />
       ) : (
         <>
-          <img
-            src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
-            alt="Video"
-            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.85 }}
-          />
+          <img src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} alt="Video"
+            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.85 }} />
           <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: "rgba(0,0,0,0.3)" }}/>
-          <button
-            onClick={() => setPlaying(true)}
-            style={{
-              position: "absolute", top: "50%", left: "50%",
-              transform: "translate(-50%,-50%)",
-              width: 64, height: 64, borderRadius: "50%",
-              background: color, border: "none", cursor: "pointer",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: `0 0 30px ${color}80`, transition: "transform 0.2s"
-            }}
-            onMouseEnter={e => e.currentTarget.style.transform = "translate(-50%,-50%) scale(1.1)"}
-            onMouseLeave={e => e.currentTarget.style.transform = "translate(-50%,-50%) scale(1)"}
-          >
+          <button onClick={() => setPlaying(true)} style={{
+            position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
+            width: 64, height: 64, borderRadius: "50%", background: color, border: "none",
+            cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: `0 0 30px ${color}80`, transition: "transform 0.2s"
+          }}
+          onMouseEnter={e => e.currentTarget.style.transform = "translate(-50%,-50%) scale(1.1)"}
+          onMouseLeave={e => e.currentTarget.style.transform = "translate(-50%,-50%) scale(1)"}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
           </button>
           <div style={{ position: "absolute", bottom: 12, left: 14, display: "flex", alignItems: "center", gap: 8 }}>
@@ -98,21 +132,18 @@ function YouTubeEmbed({ videoId, color }) {
   );
 }
 
-// ─── LANG BUTTON ──────────────────────────────────────────────────────────────
+// ─── LANG TOGGLE ──────────────────────────────────────────────────────────────
 function LangToggle({ lang, setLang, accent, muted, border }) {
   return (
-    <button
-      onClick={() => setLang(l => l === "es" ? "en" : "es")}
-      style={{
-        position: "fixed", top: 18, right: 20, zIndex: 100,
-        background: "transparent", border: `1px solid ${border}`,
-        borderRadius: 100, padding: "5px 13px",
-        color: muted, fontSize: 11, letterSpacing: "0.15em",
-        cursor: "pointer", fontFamily: "inherit", transition: "all 0.2s"
-      }}
-      onMouseEnter={e => { e.currentTarget.style.color = accent; e.currentTarget.style.borderColor = `${accent}60`; }}
-      onMouseLeave={e => { e.currentTarget.style.color = muted; e.currentTarget.style.borderColor = border; }}
-    >
+    <button onClick={() => setLang(l => l === "es" ? "en" : "es")} style={{
+      position: "fixed", top: 18, right: 20, zIndex: 100,
+      background: "transparent", border: `1px solid ${border}`,
+      borderRadius: 100, padding: "5px 13px", color: muted,
+      fontSize: 11, letterSpacing: "0.15em", cursor: "pointer",
+      fontFamily: "inherit", transition: "all 0.2s"
+    }}
+    onMouseEnter={e => { e.currentTarget.style.color = accent; e.currentTarget.style.borderColor = `${accent}60`; }}
+    onMouseLeave={e => { e.currentTarget.style.color = muted; e.currentTarget.style.borderColor = border; }}>
       {lang === "es" ? "EN" : "ES"}
     </button>
   );
@@ -128,26 +159,49 @@ export default function App() {
   const [selected, setSelected] = useState(null);
   const [guideStep, setGuideStep] = useState(0);
   const [activeVariant, setActiveVariant] = useState(null);
-  const [filterCat, setFilterCat] = useState(null); // null = all
+  const [filterCat, setFilterCat] = useState(null);
   const [timerLeft, setTimerLeft] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
   const [timerDone, setTimerDone] = useState(false);
   const [activeTab, setActiveTab] = useState("video");
-  const timerRef = useRef(null);
+  // Sequential routine
+  const [routineIdx, setRoutineIdx] = useState(0);
+  const [routineComplete, setRoutineComplete] = useState(false);
+  const [autoCountdown, setAutoCountdown] = useState(null); // null | number
+  // Persistence
+  const [savedRoutine, setSavedRoutine] = useState(() => loadTodayRoutine());
 
+  const timerRef = useRef(null);
+  const autoRef = useRef(null);
+
+  const isMobile = useIsMobile();
   const t = S[lang];
   const bg = "#0d1a14", text = "#e2ddd5", muted = "#7a7260", accent = "#5ba888";
   const surface = "rgba(255,255,255,0.035)", border = "rgba(255,255,255,0.07)";
 
+  // Exercise timer
   useEffect(() => {
     if (timerRunning && timerLeft > 0) {
-      timerRef.current = setTimeout(() => setTimerLeft(t => t - 1), 1000);
+      timerRef.current = setTimeout(() => setTimerLeft(s => s - 1), 1000);
     } else if (timerLeft === 0 && timerRunning) {
       setTimerRunning(false);
       setTimerDone(true);
+      if (screen === "routine_run") setAutoCountdown(5);
     }
     return () => clearTimeout(timerRef.current);
-  }, [timerRunning, timerLeft]);
+  }, [timerRunning, timerLeft, screen]);
+
+  // Auto-advance countdown in routine mode
+  useEffect(() => {
+    if (autoCountdown === null) return;
+    if (autoCountdown === 0) {
+      setAutoCountdown(null);
+      advanceRoutine();
+      return;
+    }
+    autoRef.current = setTimeout(() => setAutoCountdown(c => c - 1), 1000);
+    return () => clearTimeout(autoRef.current);
+  }, [autoCountdown]);
 
   const handleAnswer = (qid, value, multi) => {
     setAnswers(prev => {
@@ -160,8 +214,15 @@ export default function App() {
   };
 
   const nextQuiz = () => {
-    if (quizStep < QUESTIONS.length - 1) { setQuizStep(s => s + 1); }
-    else { setRecommended(recommend(answers)); setScreen("results"); }
+    if (quizStep < QUESTIONS.length - 1) {
+      setQuizStep(s => s + 1);
+    } else {
+      const result = recommend(answers);
+      setRecommended(result);
+      saveRoutine(answers, result);
+      setSavedRoutine({ answers, exercises: result });
+      setScreen("results");
+    }
   };
 
   const openEx = (ex) => {
@@ -175,13 +236,46 @@ export default function App() {
     setScreen("detail");
   };
 
+  const startRoutine = () => {
+    setRoutineIdx(0);
+    setRoutineComplete(false);
+    setAutoCountdown(null);
+    const first = recommended[0];
+    setTimerLeft(first.duration);
+    setTimerRunning(false);
+    setTimerDone(false);
+    setScreen("routine_run");
+  };
+
+  const advanceRoutine = () => {
+    clearTimeout(autoRef.current);
+    setAutoCountdown(null);
+    const next = routineIdx + 1;
+    if (next >= recommended.length) {
+      setRoutineComplete(true);
+    } else {
+      setRoutineIdx(next);
+      setTimerLeft(recommended[next].duration);
+      setTimerRunning(false);
+      setTimerDone(false);
+    }
+  };
+
+  const resumeSaved = () => {
+    if (!savedRoutine) return;
+    setRecommended(savedRoutine.exercises);
+    setAnswers(savedRoutine.answers);
+    setScreen("results");
+  };
+
   const displayList = screen === "results"
     ? recommended
     : filterCat
-      ? EXERCISES.filter(e => e[lang].category === catLabel(filterCat, lang) || e.es.category === filterCat)
+      ? EXERCISES.filter(e => e.es.category === filterCat)
       : EXERCISES;
 
   const fmtTime = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+  const fmtMins = (s) => Math.round(s / 60);
   const levelLabel = (ex) => t[`level_${ex.level}`];
 
   // ── HOME ───────────────────────────────────────────────────────────────────
@@ -192,7 +286,7 @@ export default function App() {
         <div style={{ position: "absolute", top: "-15%", left: "-5%", width: "60vw", height: "60vw", borderRadius: "50%", background: "radial-gradient(circle, rgba(91,168,136,0.08) 0%, transparent 70%)" }}/>
         <div style={{ position: "absolute", bottom: "-10%", right: "-5%", width: "45vw", height: "45vw", borderRadius: "50%", background: "radial-gradient(circle, rgba(123,111,160,0.06) 0%, transparent 70%)" }}/>
       </div>
-      <div style={{ position: "relative", zIndex: 1, maxWidth: 640, margin: "0 auto", padding: "0 24px", paddingTop: 60 }}>
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 640, margin: "0 auto", padding: "0 24px", paddingTop: isMobile ? 48 : 72 }}>
         <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 16px", borderRadius: 100, border: `1px solid ${accent}40`, color: accent, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 32 }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: accent, display: "inline-block" }}/>
           {t.tag}
@@ -201,6 +295,27 @@ export default function App() {
           {t.hero_title1}<br/><em style={{ color: accent, fontStyle: "italic" }}>{t.hero_title2}</em>
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.8, color: muted, maxWidth: 440, marginBottom: 44 }}>{t.hero_desc}</p>
+
+        {/* Continue today's routine if saved */}
+        {savedRoutine && (
+          <div style={{ background: `${accent}10`, border: `1px solid ${accent}30`, borderRadius: 16, padding: "16px 20px", marginBottom: 20 }}>
+            <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: accent, marginBottom: 6 }}>● {t.home_continue}</div>
+            <div style={{ fontSize: 13, color: muted, marginBottom: 12 }}>
+              {fmtMins(savedRoutine.exercises.reduce((s, e) => s + e.duration, 0))} {t.home_continue_sub}{savedRoutine.exercises.length} {t.home_continue_exercises}
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button onClick={resumeSaved} style={{
+                background: accent, border: "none", borderRadius: 100, padding: "9px 20px",
+                color: "#fff", fontSize: 13, cursor: "pointer", fontFamily: "inherit"
+              }}>{t.btn_run_routine}</button>
+              <button onClick={() => { clearRoutine(); setSavedRoutine(null); }} style={{
+                background: "transparent", border: `1px solid ${border}`, borderRadius: 100,
+                padding: "9px 16px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit"
+              }}>✕</button>
+            </div>
+          </div>
+        )}
+
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 56 }}>
           <button onClick={() => { setQuizStep(0); setAnswers({}); setScreen("quiz"); }} style={{
             background: accent, border: "none", borderRadius: 100, padding: "14px 30px",
@@ -221,7 +336,7 @@ export default function App() {
           </button>
         </div>
         <div style={{ display: "flex", gap: 36, paddingTop: 28, borderTop: `1px solid ${border}` }}>
-          {[["31", t.stat_exercises], ["8", t.stat_zones], ["62", t.stat_variants]].map(([n, l]) => (
+          {[["40", t.stat_exercises], ["9", t.stat_zones], ["80", t.stat_variants]].map(([n, l]) => (
             <div key={l}>
               <div style={{ fontSize: "clamp(1.5rem,4vw,2rem)", color: accent, fontStyle: "italic", lineHeight: 1 }}>{n}</div>
               <div style={{ fontSize: 11, color: muted, letterSpacing: "0.12em", textTransform: "uppercase", marginTop: 4 }}>{l}</div>
@@ -237,13 +352,78 @@ export default function App() {
     const q = QUESTIONS[quizStep];
     const sel = answers[q.id] || [];
     const hasAnswer = sel.length > 0;
+    const nextBtn = (
+      <button onClick={nextQuiz} disabled={!hasAnswer} style={{
+        width: "100%", background: hasAnswer ? accent : "rgba(255,255,255,0.05)",
+        border: "none", borderRadius: 100, padding: "16px 32px",
+        color: hasAnswer ? "#fff" : muted, fontSize: 15,
+        cursor: hasAnswer ? "pointer" : "default", fontFamily: "inherit",
+        boxShadow: hasAnswer ? `0 0 20px ${accent}30` : "none", transition: "all 0.2s",
+        minHeight: 52
+      }}>
+        {quizStep < QUESTIONS.length - 1 ? t.btn_next : t.btn_finish}
+      </button>
+    );
+
+    if (isMobile) {
+      return (
+        <div style={{ height: "100dvh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+          <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
+          <div style={{ height: 3, background: "rgba(255,255,255,0.06)", flexShrink: 0 }}>
+            <div style={{ height: "100%", width: `${(quizStep / QUESTIONS.length) * 100}%`, background: accent, transition: "width 0.4s", borderRadius: 2 }}/>
+          </div>
+          <div style={{ flex: 1, overflowY: "auto", WebkitOverflowScrolling: "touch" }}>
+            <div style={{ padding: "24px 20px 0" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 28, alignItems: "center" }}>
+                <button onClick={() => quizStep > 0 ? setQuizStep(s => s - 1) : setScreen("home")} style={{ background: "none", border: "none", color: muted, cursor: "pointer", fontSize: 13, letterSpacing: "0.1em", textTransform: "uppercase", fontFamily: "inherit", padding: 0, minHeight: 44, display: "flex", alignItems: "center" }}>
+                  {quizStep === 0 ? t.back_home : t.back}
+                </button>
+                <span style={{ fontSize: 12, color: muted }}>{quizStep + 1} / {QUESTIONS.length}</span>
+              </div>
+              <div style={{ fontSize: 30, marginBottom: 10 }}>{q.icon}</div>
+              <h2 style={{ fontSize: "clamp(1.1rem,5vw,1.5rem)", fontWeight: 400, margin: "0 0 6px", lineHeight: 1.3 }}>{q.question[lang]}</h2>
+              {q.multi && <p style={{ fontSize: 12, color: muted, margin: "0 0 16px", letterSpacing: "0.05em" }}>{t.multi_hint}</p>}
+              {!q.multi && <div style={{ height: 16 }}/>}
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {q.options.map(opt => {
+                  const on = sel.includes(opt.value);
+                  return (
+                    <button key={opt.value} onClick={() => handleAnswer(q.id, opt.value, q.multi)} style={{
+                      background: on ? `rgba(91,168,136,0.1)` : surface,
+                      border: `1.5px solid ${on ? accent : border}`,
+                      borderRadius: 13, padding: "13px 16px", textAlign: "left",
+                      cursor: "pointer", fontFamily: "inherit", color: text, transition: "all 0.15s",
+                      display: "flex", justifyContent: "space-between", alignItems: "center",
+                      minHeight: 52
+                    }}>
+                      <div>
+                        <div style={{ fontSize: 14, marginBottom: opt.sub[lang] ? 2 : 0 }}>{opt.label[lang]}</div>
+                        {opt.sub[lang] && <div style={{ fontSize: 12, color: muted }}>{opt.sub[lang]}</div>}
+                      </div>
+                      {on && <div style={{ width: 20, height: 20, borderRadius: "50%", background: accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: "#fff", flexShrink: 0 }}>✓</div>}
+                    </button>
+                  );
+                })}
+              </div>
+              <div style={{ height: 96 }}/>
+            </div>
+          </div>
+          {/* Sticky button */}
+          <div style={{ flexShrink: 0, padding: "12px 20px 20px", background: `linear-gradient(to bottom, transparent, ${bg} 28%)`, marginTop: -40, pointerEvents: "none" }}>
+            <div style={{ pointerEvents: "auto" }}>{nextBtn}</div>
+          </div>
+        </div>
+      );
+    }
+
+    // Desktop: natural scroll layout
     return (
-      <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column" }}>
+      <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif" }}>
         <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
         <div style={{ height: 3, background: "rgba(255,255,255,0.06)" }}>
           <div style={{ height: "100%", width: `${(quizStep / QUESTIONS.length) * 100}%`, background: accent, transition: "width 0.4s", borderRadius: 2 }}/>
         </div>
-        <div style={{ maxWidth: 560, margin: "0 auto", padding: "36px 24px", flex: 1, display: "flex", flexDirection: "column" }}>
+        <div style={{ maxWidth: 560, margin: "0 auto", padding: "44px 32px 60px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 44, alignItems: "center" }}>
             <button onClick={() => quizStep > 0 ? setQuizStep(s => s - 1) : setScreen("home")} style={{ background: "none", border: "none", color: muted, cursor: "pointer", fontSize: 13, letterSpacing: "0.1em", textTransform: "uppercase", fontFamily: "inherit", padding: 0 }}>
               {quizStep === 0 ? t.back_home : t.back}
@@ -251,10 +431,10 @@ export default function App() {
             <span style={{ fontSize: 12, color: muted }}>{quizStep + 1} / {QUESTIONS.length}</span>
           </div>
           <div style={{ fontSize: 36, marginBottom: 14 }}>{q.icon}</div>
-          <h2 style={{ fontSize: "clamp(1.2rem,5vw,1.7rem)", fontWeight: 400, margin: "0 0 6px", lineHeight: 1.3 }}>{q.question[lang]}</h2>
+          <h2 style={{ fontSize: "clamp(1.2rem,3vw,1.7rem)", fontWeight: 400, margin: "0 0 6px", lineHeight: 1.3 }}>{q.question[lang]}</h2>
           {q.multi && <p style={{ fontSize: 12, color: muted, margin: "0 0 28px", letterSpacing: "0.05em" }}>{t.multi_hint}</p>}
           {!q.multi && <div style={{ height: 24 }}/>}
-          <div style={{ display: "flex", flexDirection: "column", gap: 9, flex: 1 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 9, marginBottom: 32 }}>
             {q.options.map(opt => {
               const on = sel.includes(opt.value);
               return (
@@ -276,15 +456,7 @@ export default function App() {
               );
             })}
           </div>
-          <button onClick={nextQuiz} disabled={!hasAnswer} style={{
-            marginTop: 28, background: hasAnswer ? accent : "rgba(255,255,255,0.05)",
-            border: "none", borderRadius: 100, padding: "15px 32px",
-            color: hasAnswer ? "#fff" : muted, fontSize: 15,
-            cursor: hasAnswer ? "pointer" : "default", fontFamily: "inherit",
-            boxShadow: hasAnswer ? `0 0 20px ${accent}30` : "none", transition: "all 0.2s"
-          }}>
-            {quizStep < QUESTIONS.length - 1 ? t.btn_next : t.btn_finish}
-          </button>
+          {nextBtn}
         </div>
       </div>
     );
@@ -294,22 +466,27 @@ export default function App() {
   if (screen === "results" || screen === "library") return (
     <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif" }}>
       <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
-      <div style={{ maxWidth: 700, margin: "0 auto", padding: "0 20px" }}>
-        <div style={{ paddingTop: 36, paddingBottom: 20 }}>
+      <div style={{ maxWidth: 700, margin: "0 auto", padding: isMobile ? "0 14px" : "0 20px" }}>
+        <div style={{ paddingTop: isMobile ? 24 : 36, paddingBottom: 20 }}>
           <button onClick={() => setScreen("home")} style={{ background: "none", border: "none", color: muted, cursor: "pointer", fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "inherit", padding: 0, marginBottom: 24 }}>{t.back_home}</button>
           {screen === "results" ? (
             <>
               <div style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: accent, marginBottom: 8 }}>{t.results_tag}</div>
               <h2 style={{ fontSize: "clamp(1.4rem,5vw,2rem)", fontWeight: 400, margin: "0 0 8px" }}>
                 <em style={{ color: accent, fontStyle: "italic" }}>
-                  {Math.round(recommended.reduce((s, e) => s + e.duration, 0) / 60)}
+                  {fmtMins(recommended.reduce((s, e) => s + e.duration, 0))}
                 </em>{" "}{t.results_duration}
               </h2>
               <p style={{ fontSize: 13, color: muted, margin: "0 0 4px" }}>{recommended.length} {t.results_exercises}</p>
-              <p style={{ fontSize: 13, color: muted, margin: "0 0 20px" }}>{t.results_hint}</p>
-              <div style={{ display: "flex", gap: 10 }}>
-                <button onClick={() => { setQuizStep(0); setAnswers({}); setScreen("quiz"); }} style={{ background: "none", border: `1px solid ${border}`, borderRadius: 100, padding: "7px 18px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>{t.btn_retake}</button>
-                <button onClick={() => { setFilterCat(null); setScreen("library"); }} style={{ background: "none", border: `1px solid ${border}`, borderRadius: 100, padding: "7px 18px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>{t.btn_all}</button>
+              <p style={{ fontSize: 13, color: muted, margin: "0 0 16px" }}>{t.results_hint}</p>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <button onClick={startRoutine} style={{
+                  background: accent, border: "none", borderRadius: 100, padding: "10px 22px",
+                  color: "#fff", fontSize: 13, cursor: "pointer", fontFamily: "inherit",
+                  boxShadow: `0 0 20px ${accent}30`
+                }}>{t.btn_run_routine}</button>
+                <button onClick={() => { setQuizStep(0); setAnswers({}); setScreen("quiz"); }} style={{ background: "none", border: `1px solid ${border}`, borderRadius: 100, padding: "10px 18px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>{t.btn_retake}</button>
+                <button onClick={() => { setFilterCat(null); setScreen("library"); }} style={{ background: "none", border: `1px solid ${border}`, borderRadius: 100, padding: "10px 18px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>{t.btn_all}</button>
               </div>
             </>
           ) : (
@@ -333,7 +510,7 @@ export default function App() {
             </>
           )}
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))", gap: 12, paddingBottom: 60 }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(auto-fill, minmax(190px, 1fr))", gap: isMobile ? 10 : 12, paddingBottom: 60 }}>
           {displayList.map((ex, i) => {
             const exl = ex[lang];
             return (
@@ -362,6 +539,136 @@ export default function App() {
     </div>
   );
 
+  // ── ROUTINE RUN ────────────────────────────────────────────────────────────
+  if (screen === "routine_run") {
+    if (routineComplete) {
+      const totalMins = fmtMins(recommended.reduce((s, e) => s + e.duration, 0));
+      return (
+        <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 24px", textAlign: "center" }}>
+          <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
+          <div style={{ fontSize: 72, marginBottom: 24 }}>🎉</div>
+          <h2 style={{ fontSize: "clamp(1.4rem,5vw,2rem)", fontWeight: 400, margin: "0 0 12px" }}>{t.run_complete_title}</h2>
+          <p style={{ fontSize: 13, color: muted, marginBottom: 4 }}>{t.run_complete_time}</p>
+          <p style={{ fontSize: "clamp(1.5rem,4vw,2.2rem)", color: accent, fontStyle: "italic", marginBottom: 36 }}>{totalMins} min</p>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" }}>
+            <button onClick={() => setScreen("results")} style={{ background: accent, border: "none", borderRadius: 100, padding: "12px 24px", color: "#fff", fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>{t.run_complete_back}</button>
+            <button onClick={() => { setRoutineIdx(0); setRoutineComplete(false); setTimerLeft(recommended[0].duration); setTimerRunning(false); setTimerDone(false); }} style={{ background: "transparent", border: `1px solid ${border}`, borderRadius: 100, padding: "12px 20px", color: muted, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>{t.run_complete_retry}</button>
+          </div>
+        </div>
+      );
+    }
+
+    const ex = recommended[routineIdx];
+    const exl = ex[lang];
+    const timerPct = (timerLeft / ex.duration) * 100;
+    const total = recommended.length;
+
+    return (
+      <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column" }}>
+        <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
+
+        {/* Progress dots */}
+        <div style={{ display: "flex", gap: 5, padding: "20px 24px 0", justifyContent: "center" }}>
+          {recommended.map((_, i) => (
+            <div key={i} style={{
+              width: i === routineIdx ? 20 : 8, height: 8, borderRadius: 4,
+              background: i < routineIdx ? accent : i === routineIdx ? accent : "rgba(255,255,255,0.15)",
+              opacity: i < routineIdx ? 0.5 : 1,
+              transition: "all 0.3s"
+            }}/>
+          ))}
+        </div>
+
+        <div style={{ maxWidth: 520, margin: "0 auto", padding: "20px 24px", flex: 1, display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 28 }}>
+            <button onClick={() => setScreen("results")} style={{ background: "none", border: "none", color: muted, cursor: "pointer", fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "inherit", padding: 0 }}>{t.back_exercise}</button>
+            <span style={{ fontSize: 12, color: muted }}>{t.run_exercise} {routineIdx + 1} / {total}</span>
+          </div>
+
+          {/* Exercise card */}
+          <div style={{ background: surface, border: `1px solid ${ex.color}30`, borderRadius: 20, padding: "22px", marginBottom: 16, position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: -30, right: -30, width: 120, height: 120, background: `radial-gradient(circle, ${ex.color}15, transparent 70%)`, borderRadius: "50%" }}/>
+            <div style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: ex.color, marginBottom: 6 }}>{exl.category}</div>
+            <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
+              <div style={{ fontSize: 44 }}>{ex.icon}</div>
+              <div>
+                <h2 style={{ fontSize: "clamp(1.1rem,4vw,1.5rem)", fontWeight: 400, margin: "0 0 6px", lineHeight: 1.2 }}>{exl.name}</h2>
+                <p style={{ fontSize: 12, color: muted, margin: 0, lineHeight: 1.5 }}>{exl.description}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Timer */}
+          <div style={{ background: surface, border: `1px solid ${border}`, borderRadius: 16, padding: "20px", marginBottom: 16, display: "flex", alignItems: "center", gap: 20 }}>
+            <div style={{ position: "relative", width: 70, height: 70, flexShrink: 0 }}>
+              <svg width="70" height="70" style={{ transform: "rotate(-90deg)" }}>
+                <circle cx="35" cy="35" r="28" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="4"/>
+                <circle cx="35" cy="35" r="28" fill="none" stroke={timerDone ? "#4ade80" : ex.color} strokeWidth="4"
+                  strokeDasharray={`${2 * Math.PI * 28}`}
+                  strokeDashoffset={`${2 * Math.PI * 28 * (1 - timerPct / 100)}`}
+                  strokeLinecap="round" style={{ transition: "stroke-dashoffset 1s linear" }}/>
+              </svg>
+              <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: timerDone ? 20 : 13, color: timerDone ? "#4ade80" : ex.color, fontWeight: 600 }}>
+                {timerDone ? "✓" : fmtTime(timerLeft)}
+              </div>
+            </div>
+            <div style={{ flex: 1 }}>
+              {timerDone ? (
+                <>
+                  <div style={{ fontSize: 14, color: "#4ade80", marginBottom: 8 }}>{t.run_rest_title}</div>
+                  {autoCountdown !== null && (
+                    <div style={{ fontSize: 11, color: muted, marginBottom: 8 }}>{t.run_auto} {autoCountdown}s…</div>
+                  )}
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <button onClick={() => { clearTimeout(autoRef.current); advanceRoutine(); }} style={{
+                      background: accent, border: "none", borderRadius: 100, padding: "8px 20px",
+                      color: "#fff", fontSize: 13, cursor: "pointer", fontFamily: "inherit"
+                    }}>{t.run_rest_next}</button>
+                    {autoCountdown !== null && (
+                      <button onClick={() => { clearTimeout(autoRef.current); setAutoCountdown(null); }} style={{
+                        background: "transparent", border: `1px solid ${border}`, borderRadius: 100,
+                        padding: "8px 14px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit"
+                      }}>⏸</button>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <button onClick={() => setTimerRunning(r => !r)} style={{
+                    background: timerRunning ? `${ex.color}20` : accent,
+                    border: `1px solid ${ex.color}50`, borderRadius: 100, padding: "8px 18px",
+                    color: timerRunning ? ex.color : "#fff", fontSize: 12, cursor: "pointer", fontFamily: "inherit"
+                  }}>{timerRunning ? t.btn_pause : t.btn_start}</button>
+                  <button onClick={() => { clearTimeout(timerRef.current); setTimerLeft(ex.duration); setTimerRunning(false); setTimerDone(false); }} style={{
+                    background: "transparent", border: `1px solid ${border}`, borderRadius: 100,
+                    padding: "8px 14px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit"
+                  }}>{t.btn_reset}</button>
+                  <button onClick={advanceRoutine} style={{
+                    background: "transparent", border: `1px solid ${border}`, borderRadius: 100,
+                    padding: "8px 14px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit"
+                  }}>{t.run_skip}</button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Steps for current exercise */}
+          <div style={{ background: surface, border: `1px solid ${border}`, borderRadius: 16, padding: "16px 20px", flex: 1 }}>
+            <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: muted, marginBottom: 12 }}>{t.guide_title}</div>
+            {exl.steps.map((s, i) => (
+              <div key={i} style={{ display: "flex", gap: 10, marginBottom: 10 }}>
+                <div style={{ width: 20, height: 20, borderRadius: "50%", background: `${ex.color}20`, border: `1px solid ${ex.color}40`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: ex.color, flexShrink: 0, marginTop: 1 }}>{i + 1}</div>
+                <p style={{ fontSize: 12, color: "#c8c0b2", lineHeight: 1.6, margin: 0 }}>{s}</p>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ height: 24 }}/>
+        </div>
+      </div>
+    );
+  }
+
   // ── DETAIL ─────────────────────────────────────────────────────────────────
   if (screen === "detail" && selected) {
     const ex = selected;
@@ -371,12 +678,11 @@ export default function App() {
     return (
       <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif" }}>
         <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
-        <div style={{ maxWidth: 660, margin: "0 auto", padding: "0 20px" }}>
-          <div style={{ paddingTop: 32, paddingBottom: 16 }}>
+        <div style={{ maxWidth: 660, margin: "0 auto", padding: isMobile ? "0 14px" : "0 20px" }}>
+          <div style={{ paddingTop: isMobile ? 20 : 32, paddingBottom: 16 }}>
             <button onClick={() => setScreen(recommended.length ? "results" : "library")} style={{ background: "none", border: "none", color: muted, cursor: "pointer", fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "inherit", padding: 0 }}>{t.back_exercise}</button>
           </div>
 
-          {/* Header */}
           <div style={{ background: surface, border: `1px solid ${ex.color}30`, borderRadius: 20, padding: "22px 22px 18px", marginBottom: 14, position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", top: -40, right: -40, width: 160, height: 160, background: `radial-gradient(circle, ${ex.color}12, transparent 70%)`, borderRadius: "50%" }}/>
             <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
@@ -393,7 +699,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* Timer */}
           <div style={{ background: surface, border: `1px solid ${border}`, borderRadius: 16, padding: "16px 20px", marginBottom: 14, display: "flex", alignItems: "center", gap: 16 }}>
             <div style={{ position: "relative", width: 52, height: 52, flexShrink: 0 }}>
               <svg width="52" height="52" style={{ transform: "rotate(-90deg)" }}>
@@ -408,9 +713,7 @@ export default function App() {
               </div>
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 11, color: muted, marginBottom: 7 }}>
-                {timerDone ? t.timer_done : t.timer_label}
-              </div>
+              <div style={{ fontSize: 11, color: muted, marginBottom: 7 }}>{timerDone ? t.timer_done : t.timer_label}</div>
               <div style={{ display: "flex", gap: 7 }}>
                 {!timerDone && (
                   <button onClick={() => setTimerRunning(r => !r)} style={{ background: timerRunning ? `${ex.color}20` : "transparent", border: `1px solid ${ex.color}50`, borderRadius: 100, padding: "5px 14px", color: ex.color, fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>
@@ -422,7 +725,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* Benefits */}
           <div style={{ background: surface, border: `1px solid ${border}`, borderRadius: 16, padding: "16px 20px", marginBottom: 14 }}>
             <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: muted, marginBottom: 12 }}>{t.benefits_title}</div>
             {exl.benefits.map((b, i) => (
@@ -433,16 +735,14 @@ export default function App() {
             ))}
           </div>
 
-          {/* Tabs */}
           <div style={{ display: "flex", gap: 0, marginBottom: 12, background: surface, borderRadius: 12, padding: 4, border: `1px solid ${border}` }}>
-            {[["video", t.tab_video], ["guide", t.tab_guide], ["variants", t.tab_variants]].map(([tab, label]) => (
+            {[["video", t.tab_video, "▶"], ["guide", t.tab_guide, "📋"], ["variants", t.tab_variants, "⚙️"]].map(([tab, label, icon]) => (
               <button key={tab} onClick={() => setActiveTab(tab)} style={{
                 flex: 1, padding: "9px 4px", borderRadius: 9,
                 background: activeTab === tab ? ex.color : "transparent",
                 border: "none", color: activeTab === tab ? "#fff" : muted,
-                fontSize: 12, cursor: "pointer", fontFamily: "inherit", transition: "all 0.2s",
-                letterSpacing: "0.02em"
-              }}>{label}</button>
+                fontSize: isMobile ? 13 : 12, cursor: "pointer", fontFamily: "inherit", transition: "all 0.2s"
+              }}>{isMobile ? icon : label}</button>
             ))}
           </div>
 
@@ -459,9 +759,7 @@ export default function App() {
             <div style={{ background: surface, border: `1px solid ${border}`, borderRadius: 16, padding: "18px 20px", marginBottom: 14 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
                 <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: muted }}>{t.guide_title}</div>
-                <button onClick={() => { setGuideStep(0); setScreen("guide"); }} style={{ background: ex.color, border: "none", borderRadius: 100, padding: "7px 16px", color: "#fff", fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>
-                  {t.btn_guided}
-                </button>
+                <button onClick={() => { setGuideStep(0); setScreen("guide"); }} style={{ background: ex.color, border: "none", borderRadius: 100, padding: "7px 16px", color: "#fff", fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>{t.btn_guided}</button>
               </div>
               {exl.steps.map((s, i) => (
                 <div key={i} style={{ display: "flex", gap: 12, marginBottom: 14 }}>
@@ -501,7 +799,6 @@ export default function App() {
               ))}
             </div>
           )}
-
           <div style={{ height: 40 }}/>
         </div>
       </div>
