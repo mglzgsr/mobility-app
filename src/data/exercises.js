@@ -1119,6 +1119,336 @@ export const EXERCISES = [
         { name: "With bar on rack", for: ["advanced"], description: "Rest the bar on a rack at chest height and practice rack position under load." }
       ]
     }
+  },
+
+  // ─── RODILLA ──────────────────────────────────────────────────────────────
+  {
+    id: 32, icon: "⭕", level: "beginner", duration: 90, color: "#5ba888",
+    tags: ["rodilla", "calentamiento", "movilidad_activa", "deportista", "crossfit"],
+    contraindications: [],
+    youtubeId: "2vNLqQ7Rmsk",
+    es: {
+      name: "Círculos de Rodilla", category: "Rodilla",
+      description: "Movilización articular activa de la rodilla para lubricar el cartílago y mejorar el rango de movimiento.",
+      benefits: ["Activa el líquido sinovial", "Mejora flexión y extensión activa", "Calentamiento esencial pre-sentadilla"],
+      steps: [
+        "De pie, pies juntos. Dobla ligeramente las rodillas y coloca las manos sobre ellas",
+        "Haz círculos lentos con ambas rodillas en sentido horario, 10 veces",
+        "Cambia al sentido antihorario, 10 veces",
+        "Varía: círculos en direcciones opuestas (una rodilla a cada lado). 2 series"
+      ],
+      variants: [
+        { name: "Solo flexión-extensión", for: ["dolor activo", "post-cirugía"], description: "En lugar de círculos, alterna doblar y estirar la rodilla suavemente." },
+        { name: "Con una pierna", for: ["asimetría", "rehabilitación"], description: "Trabaja una rodilla cada vez apoyado en una pared para mayor control." }
+      ]
+    },
+    en: {
+      name: "Knee Circles", category: "Knee",
+      description: "Active joint mobilization of the knee to lubricate cartilage and improve range of motion.",
+      benefits: ["Activates synovial fluid", "Improves active flexion and extension", "Essential warm-up before squatting"],
+      steps: [
+        "Stand with feet together. Slightly bend knees and place hands on them",
+        "Make slow circles clockwise with both knees, 10 times",
+        "Switch to counterclockwise, 10 times",
+        "Variation: circles in opposite directions (one knee each way). 2 sets"
+      ],
+      variants: [
+        { name: "Flexion-extension only", for: ["active pain", "post-surgery"], description: "Instead of circles, alternate gently bending and straightening the knee." },
+        { name: "Single leg", for: ["asymmetry", "rehabilitation"], description: "Work one knee at a time leaning against a wall for more control." }
+      ]
+    }
+  },
+  {
+    id: 33, icon: "🦵", level: "beginner", duration: 60, color: "#6a9e5b",
+    tags: ["rodilla", "cuadriceps", "corredor", "deportista", "sedentario"],
+    contraindications: [],
+    youtubeId: "BhQimqvU1tM",
+    es: {
+      name: "Cuádriceps de Pie", category: "Rodilla",
+      description: "Estira el cuádriceps y el recto femoral, frecuentemente acortados en sedentarios y corredores.",
+      benefits: ["Alivia tensión anterior de rodilla", "Mejora extensión de cadera", "Previene síndrome rotuliano"],
+      steps: [
+        "De pie con una mano en la pared para equilibrarte",
+        "Dobla la rodilla derecha llevando el talón hacia el glúteo",
+        "Agarra el tobillo con la mano derecha y acerca el talón al glúteo",
+        "Mantén la rodilla cerca de la otra pierna. 30–45 segundos por lado"
+      ],
+      variants: [
+        { name: "Tumbado boca abajo", for: ["equilibrio", "vértigo"], description: "Túmbate boca abajo y lleva el talón al glúteo. Más estable y mayor rango." },
+        { name: "Con banda", for: ["poca movilidad de rodilla"], description: "Pasa una banda por el tobillo y tira desde el extremo. Ideal si no llegas al tobillo." }
+      ]
+    },
+    en: {
+      name: "Standing Quad Stretch", category: "Knee",
+      description: "Stretches the quadriceps and rectus femoris, frequently shortened in sedentary people and runners.",
+      benefits: ["Relieves anterior knee tension", "Improves hip extension", "Prevents patellofemoral syndrome"],
+      steps: [
+        "Stand with one hand on a wall for balance",
+        "Bend the right knee bringing the heel toward the glute",
+        "Grasp the ankle with the right hand and draw the heel close to the glute",
+        "Keep the knee close to the other leg. 30–45 seconds per side"
+      ],
+      variants: [
+        { name: "Lying face down", for: ["balance", "vertigo"], description: "Lie face down and bring heel to glute. More stable and greater range." },
+        { name: "With band", for: ["limited knee mobility"], description: "Loop a band around the ankle and pull from the end. Good if you can't reach the ankle." }
+      ]
+    }
+  },
+  {
+    id: 34, icon: "🛝", level: "beginner", duration: 90, color: "#7b6fa0",
+    tags: ["rodilla", "rehabilitacion", "flexion_rodilla", "postoperatorio"],
+    contraindications: [],
+    youtubeId: "Bz0wSFRjH2c",
+    es: {
+      name: "Deslizamiento de Talón", category: "Rodilla",
+      description: "Recupera el rango de flexión de rodilla de forma suave y progresiva.",
+      benefits: ["Aumenta rango de flexión de rodilla", "Rehabilitación post-cirugía o esguince", "Mantiene movilidad articular sin carga"],
+      steps: [
+        "Túmbate boca arriba con las piernas estiradas",
+        "Desliza lentamente el talón derecho hacia los glúteos doblando la rodilla",
+        "Llega hasta donde puedas sin forzar. Mantén 5 segundos",
+        "Estira de nuevo lentamente. 10–15 repeticiones por lado"
+      ],
+      variants: [
+        { name: "Con toalla bajo el talón", for: ["rehabilitación temprana"], description: "La toalla reduce la fricción y facilita el deslizamiento en superficies rugosas." },
+        { name: "Sentado en el borde", for: ["dificultad en suelo"], description: "Sentado al borde de la cama o silla, deja caer la pierna y recógela activamente." }
+      ]
+    },
+    en: {
+      name: "Heel Slides", category: "Knee",
+      description: "Gently and progressively recovers knee flexion range of motion.",
+      benefits: ["Increases knee flexion range", "Post-surgery or sprain rehabilitation", "Maintains joint mobility without load"],
+      steps: [
+        "Lie on your back with legs straight",
+        "Slowly slide the right heel toward the glutes by bending the knee",
+        "Go as far as you can without forcing. Hold 5 seconds",
+        "Slowly extend again. 10–15 reps per side"
+      ],
+      variants: [
+        { name: "Towel under heel", for: ["early rehabilitation"], description: "The towel reduces friction and makes sliding easier on rough surfaces." },
+        { name: "Seated at the edge", for: ["difficulty on floor"], description: "Seated at the edge of a bed or chair, let the leg drop and actively bring it back up." }
+      ]
+    }
+  },
+  {
+    id: 35, icon: "🩻", level: "beginner", duration: 90, color: "#c47c3e",
+    tags: ["rodilla", "rehabilitacion", "condromalacia", "rotula"],
+    contraindications: [],
+    youtubeId: "pmKdwBN1HxA",
+    es: {
+      name: "Movilización de Rótula", category: "Rodilla",
+      description: "Desplaza manualmente la rótula para liberar adherencias y mejorar el deslizamiento articular.",
+      benefits: ["Reduce rigidez post-cirugía de rodilla", "Alivia condromalacia rotuliana", "Mejora seguimiento rotuliano en sentadilla"],
+      steps: [
+        "Siéntate con la pierna estirada y el músculo cuádriceps relajado",
+        "Con los pulgares y dedos índice, agarra suavemente la rótula",
+        "Desplázala hacia arriba/abajo y a los lados (4 direcciones), 10 veces cada una",
+        "Sin dolor — si hay resistencia fuerte, reduce el rango"
+      ],
+      variants: [
+        { name: "Solo dirección limitada", for: ["rehabilitación específica"], description: "Trabaja solo en la dirección que tu fisio ha indicado como prioritaria." },
+        { name: "Con rodilla ligeramente doblada", for: ["mayor acceso"], description: "Una pequeña almohada bajo la rodilla facilita el acceso a los bordes de la rótula." }
+      ]
+    },
+    en: {
+      name: "Patellar Mobilization", category: "Knee",
+      description: "Manually glides the patella to free adhesions and improve joint sliding.",
+      benefits: ["Reduces post-knee surgery stiffness", "Relieves patellar chondromalacia", "Improves patellar tracking in squat"],
+      steps: [
+        "Sit with the leg straight and quadriceps muscle relaxed",
+        "With thumbs and index fingers, gently grasp the kneecap",
+        "Glide it up/down and side to side (4 directions), 10 times each",
+        "No pain — if there is strong resistance, reduce the range"
+      ],
+      variants: [
+        { name: "One direction only", for: ["specific rehabilitation"], description: "Work only in the direction your physio has indicated as priority." },
+        { name: "With knee slightly bent", for: ["better access"], description: "A small pillow under the knee makes the edges of the patella more accessible." }
+      ]
+    }
+  },
+
+  // ─── CODO ─────────────────────────────────────────────────────────────────
+  {
+    id: 36, icon: "💪", level: "beginner", duration: 60, color: "#5b8fc4",
+    tags: ["codo", "hombros", "sedentario", "oficina", "teclado"],
+    contraindications: [],
+    youtubeId: "BglqDh5Xozc",
+    es: {
+      name: "Estiramiento de Tríceps", category: "Muñeca",
+      description: "Estira el tríceps braquial y la cápsula posterior del codo, tensos en usuarios de teclado y deportistas de fuerza.",
+      benefits: ["Alivia tensión posterior de codo", "Mejora extensión completa del codo", "Previene epicondilitis posterior"],
+      steps: [
+        "Eleva el brazo derecho y dobla el codo llevando la mano hacia la espalda",
+        "Con la mano izquierda, empuja suavemente el codo hacia abajo y hacia dentro",
+        "Siente el estiramiento en la parte posterior del brazo",
+        "Mantén 30 segundos. Repite 2–3 veces por lado"
+      ],
+      variants: [
+        { name: "Con toalla", for: ["hombros rígidos"], description: "Pasa una toalla por la mano alta y tira desde abajo. Sin estrés en el hombro." },
+        { name: "Tumbado boca arriba", for: ["mayor intensidad"], description: "Brazo vertical hacia el techo, dobla el codo y deja caer la mano detrás de la cabeza." }
+      ]
+    },
+    en: {
+      name: "Tricep Stretch", category: "Wrist",
+      description: "Stretches the triceps brachii and posterior elbow capsule, tight in keyboard users and strength athletes.",
+      benefits: ["Relieves posterior elbow tension", "Improves full elbow extension", "Prevents posterior epicondylitis"],
+      steps: [
+        "Raise the right arm and bend the elbow, bringing the hand behind your back",
+        "With the left hand, gently push the elbow down and inward",
+        "Feel the stretch in the back of the arm",
+        "Hold 30 seconds. Repeat 2–3 times per side"
+      ],
+      variants: [
+        { name: "With towel", for: ["stiff shoulders"], description: "Thread a towel through the top hand and pull from below. No shoulder stress." },
+        { name: "Lying on back", for: ["greater intensity"], description: "Arm vertical toward the ceiling, bend elbow and let the hand fall behind the head." }
+      ]
+    }
+  },
+  {
+    id: 37, icon: "🔄", level: "beginner", duration: 60, color: "#b05c6e",
+    tags: ["codo", "muñeca", "sedentario", "teclado", "oficina"],
+    contraindications: [],
+    youtubeId: "JqkJGiYDAEA",
+    es: {
+      name: "Pronación y Supinación", category: "Muñeca",
+      description: "Moviliza la articulación radio-cubital, crucial para rotar el antebrazo en actividades cotidianas y deportivas.",
+      benefits: ["Mantiene rotación completa del antebrazo", "Previene síndrome del túnel cubital", "Esencial para deportes de raqueta y halterofilia"],
+      steps: [
+        "Siéntate con el codo doblado a 90°, apoyado en el muslo o una mesa",
+        "Gira el antebrazo lentamente hasta que la palma mire al suelo (pronación)",
+        "Gira en sentido contrario hasta que la palma mire al techo (supinación)",
+        "10 repeticiones lentas por lado. Puedes añadir un martillo o botella como resistencia"
+      ],
+      variants: [
+        { name: "Sin resistencia", for: ["rehabilitación", "dolor agudo"], description: "Solo el peso del antebrazo. Perfecto para recuperación post-lesión." },
+        { name: "Con botella de agua", for: ["fortalecimiento"], description: "Una botella alarga la palanca y añade resistencia progresiva." }
+      ]
+    },
+    en: {
+      name: "Forearm Pronation & Supination", category: "Wrist",
+      description: "Mobilizes the radio-ulnar joint, crucial for rotating the forearm in daily and sport activities.",
+      benefits: ["Maintains full forearm rotation", "Prevents cubital tunnel syndrome", "Essential for racket sports and weightlifting"],
+      steps: [
+        "Sit with elbow bent at 90°, resting on thigh or a table",
+        "Slowly rotate the forearm until the palm faces the floor (pronation)",
+        "Rotate the other way until the palm faces the ceiling (supination)",
+        "10 slow reps per side. You can add a hammer or bottle for resistance"
+      ],
+      variants: [
+        { name: "Without resistance", for: ["rehabilitation", "acute pain"], description: "Just the forearm's weight. Perfect for post-injury recovery." },
+        { name: "With water bottle", for: ["strengthening"], description: "A bottle lengthens the lever and adds progressive resistance." }
+      ]
+    }
+  },
+
+  // ─── HOMBROS adicionales ──────────────────────────────────────────────────
+  {
+    id: 38, icon: "🪃", level: "beginner", duration: 90, color: "#5ba888",
+    tags: ["hombros", "postura", "sedentario", "calentamiento", "cifosis", "oficina"],
+    contraindications: [],
+    youtubeId: "jDbfuzfdVHM",
+    es: {
+      name: "Círculos Escapulares", category: "Hombros",
+      description: "Moviliza la escápula en todas sus direcciones para liberar tensión y preparar el hombro para carga.",
+      benefits: ["Activa el serrato anterior y trapecio inferior", "Libera tensión de trapecios superiores", "Calentamiento esencial antes de press o snatch"],
+      steps: [
+        "De pie o sentado, brazos relajados a los lados",
+        "Sube los hombros hacia las orejas, lllévalos hacia atrás, bájalos y tráelos al frente",
+        "Completa el círculo lentamente y con control. 10 veces hacia atrás",
+        "Invierte la dirección. 10 veces hacia adelante"
+      ],
+      variants: [
+        { name: "Un hombro cada vez", for: ["asimetría", "lesión unilateral"], description: "Trabaja cada escápula por separado para detectar restricciones." },
+        { name: "Con brazos extendidos", for: ["mayor activación", "deportista"], description: "Realiza los círculos con los brazos en T. Mayor demanda escapular." }
+      ]
+    },
+    en: {
+      name: "Scapular Circles", category: "Shoulders",
+      description: "Mobilizes the scapula in all directions to release tension and prepare the shoulder for load.",
+      benefits: ["Activates serratus anterior and lower trapezius", "Releases upper trapezius tension", "Essential warm-up before pressing or snatching"],
+      steps: [
+        "Stand or sit, arms relaxed at sides",
+        "Raise shoulders toward ears, pull them back, lower them, and bring them forward",
+        "Complete the circle slowly and with control. 10 times backward",
+        "Reverse direction. 10 times forward"
+      ],
+      variants: [
+        { name: "One shoulder at a time", for: ["asymmetry", "unilateral injury"], description: "Work each scapula separately to detect restrictions." },
+        { name: "Arms in T position", for: ["greater activation", "athlete"], description: "Do circles with arms in a T shape. Greater scapular demand." }
+      ]
+    }
+  },
+  {
+    id: 39, icon: "✈️", level: "beginner", duration: 90, color: "#c47c3e",
+    tags: ["hombros", "postura", "sedentario", "cifosis", "deportista", "espalda_alta"],
+    contraindications: [],
+    youtubeId: "0ONNU8tkBs8",
+    es: {
+      name: "Y-T-W-L Escapular", category: "Hombros",
+      description: "Activa los estabilizadores escapulares profundos (romboides, serrato, trapecio medio/inferior) muy inhibidos en posturas de escritorio.",
+      benefits: ["Corrige desequilibrios posturales del hombro", "Activa músculos antagonistas al pectoral", "Previene impingement y lesiones de manguito"],
+      steps: [
+        "Tumbado boca abajo (o de pie inclinado a 45°), brazos extendidos en Y — eleva y baja. 10 reps",
+        "Cambia a posición T (brazos perpendiculares al cuerpo) — eleva y baja. 10 reps",
+        "Dobla los codos a 90° en posición W — junta los codos atrás. 10 reps",
+        "Dobla codos a 90°, baja en L — rota los antebrazos hacia arriba y abajo. 10 reps"
+      ],
+      variants: [
+        { name: "Solo Y y T para empezar", for: ["principiante", "hombros débiles"], description: "Las posiciones Y y T son más accesibles. Domínalas antes de añadir W y L." },
+        { name: "Con mancuernas ligeras", for: ["avanzado"], description: "0.5–2 kg añaden resistencia significativa a estos músculos pequeños." }
+      ]
+    },
+    en: {
+      name: "Y-T-W-L Scapular", category: "Shoulders",
+      description: "Activates deep scapular stabilizers (rhomboids, serratus, mid/lower trapezius) highly inhibited in desk postures.",
+      benefits: ["Corrects postural shoulder imbalances", "Activates pectoral antagonist muscles", "Prevents impingement and rotator cuff injuries"],
+      steps: [
+        "Lie face down (or stand bent at 45°), arms in Y — raise and lower. 10 reps",
+        "Switch to T position (arms perpendicular to body) — raise and lower. 10 reps",
+        "Bend elbows to 90° in W — squeeze elbows back. 10 reps",
+        "Bend elbows to 90° in L — rotate forearms up and down. 10 reps"
+      ],
+      variants: [
+        { name: "Only Y and T to start", for: ["beginner", "weak shoulders"], description: "Y and T positions are more accessible. Master them before adding W and L." },
+        { name: "With light dumbbells", for: ["advanced"], description: "0.5–2 kg adds significant resistance to these small muscles." }
+      ]
+    }
+  },
+  {
+    id: 40, icon: "🔃", level: "intermediate", duration: 120, color: "#7b6fa0",
+    tags: ["hombros", "deportista", "crossfit", "overhead", "movilidad_activa", "manguito"],
+    contraindications: ["luxacion_reciente"],
+    youtubeId: "6u8QpNmQy_g",
+    es: {
+      name: "Rotación Glenohumeral Activa", category: "Hombros",
+      description: "Trabaja la rotación interna y externa activa del hombro para mantener el pleno rango funcional y la salud del manguito rotador.",
+      benefits: ["Mantiene rango de rotación glenohumeral", "Fortalece el manguito rotador", "Previene capsulitis adhesiva (hombro congelado)"],
+      steps: [
+        "De pie, brazo en abducción a 90° y codo a 90° (posición de rendición)",
+        "Rota el antebrazo hacia abajo (rotación interna) hasta el límite. Mantén 2 seg",
+        "Rota hacia arriba (rotación externa) hasta el límite. Mantén 2 seg",
+        "10 repeticiones lentas y controladas por lado. 2 series"
+      ],
+      variants: [
+        { name: "Con brazo pegado al cuerpo", for: ["dolor en abducción", "principiante"], description: "Codo a 90° pegado al costado. Rota el antebrazo con una banda de baja resistencia." },
+        { name: "Tumbado boca arriba", for: ["control máximo"], description: "La gravedad actúa como resistencia suave. Más fácil de controlar el rango." }
+      ]
+    },
+    en: {
+      name: "Active Shoulder Rotation", category: "Shoulders",
+      description: "Works active internal and external shoulder rotation to maintain full functional range and rotator cuff health.",
+      benefits: ["Maintains glenohumeral rotation range", "Strengthens the rotator cuff", "Prevents adhesive capsulitis (frozen shoulder)"],
+      steps: [
+        "Stand, arm abducted to 90° and elbow at 90° (surrender position)",
+        "Rotate forearm downward (internal rotation) to the limit. Hold 2 sec",
+        "Rotate upward (external rotation) to the limit. Hold 2 sec",
+        "10 slow, controlled reps per side. 2 sets"
+      ],
+      variants: [
+        { name: "Arm at side", for: ["pain in abduction", "beginner"], description: "Elbow at 90° at the side. Rotate the forearm with a low-resistance band." },
+        { name: "Lying on back", for: ["maximum control"], description: "Gravity acts as gentle resistance. Easier to control the range." }
+      ]
+    }
   }
 ];
 
@@ -1129,6 +1459,7 @@ export const CAT_ES_TO_EN = {
   "Cuello": "Neck",
   "Tobillo y Pie": "Ankle & Foot",
   "Muñeca": "Wrist",
+  "Rodilla": "Knee",
   "Cadena Posterior": "Posterior Chain",
   "CrossFit": "CrossFit",
 };
