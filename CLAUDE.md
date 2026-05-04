@@ -2,62 +2,86 @@
 
 SPA de ejercicios de movilidad personalizados. React 19 + Vite 8. Sin backend ni router. Bilingüe ES/EN.
 
+## Infraestructura
+
+- **Deploy**: push a `main` → Vercel auto-deploy (GitHub: `mglzgsr/mobility-app`)
+- **Dev**: `npm run dev` → puerto 5173 (configurado en `.claude/launch.json`)
+
 ## Arquitectura
 
-- `src/App.jsx` — lógica del componente y pantallas (~380 líneas)
-- `src/data/exercises.js` — 31 ejercicios con contenido bilingüe + `catLabel()` helper
-- `src/data/strings.js` — textos de UI (`S`), cuestionario (`QUESTIONS`), claves de categoría (`CATEGORY_KEYS`)
-
-Sin router — la navegación es un estado `screen` que actúa como máquina de estados:
+`src/App.jsx` — máquina de estados vía `screen`:
 
 ```
 home → quiz → results → detail → guide
             ↘ library ↗
+                      → routine_run
 ```
 
-`recommended` (array) persiste mientras no se repita el test. Si está vacío al volver desde `detail`, regresa a `library`.
+`recommended` persiste mientras no se repita el test. Si está vacío al volver desde `detail`, regresa a `library`.
 
-## Multiidioma
+## Archivos clave
 
-`lang` state (`"es"` | `"en"`) en `App`. Botón fijo top-right en todas las pantallas. Acceso al contenido: `ex[lang].name`, `ex[lang].steps`, etc. — los `tags` y `contraindications` son siempre en español (claves internas, no mostradas). Textos de UI vía `const t = S[lang]`.
-
-Las categorías se almacenan en español como clave interna (`"Columna"`, `"CrossFit"`…). `catLabel(cat, lang)` traduce para mostrar. El filtro de biblioteca compara contra la clave española.
+- `src/data/exercises.js` — 40 ejercicios bilingüe + `catLabel()` + `CAT_ES_TO_EN`
+- `src/data/strings.js` — textos UI (`S`), cuestionario (`QUESTIONS`), `CATEGORY_KEYS`
 
 ## Ejercicios
 
-31 en total: 23 generales + 8 de CrossFit/halterofilia. Los 8 CrossFit abordan: dorsiflexión de tobillo, posición de rack frontal, movilidad torácica para overhead, apertura de cadera para sentadilla olímpica, estiramiento de dorsales, rotación externa overhead, activación de glúteo, muñeca para front squat.
+40 en total: 23 generales + 8 CrossFit/halterofilia + 4 Rodilla + 3 Hombros adicionales + 2 Codo/antebrazo. Categorías: Columna, Cadera, Hombros, Cuello, Tobillo y Pie, Muñeca, Rodilla, Cadena Posterior, CrossFit.
 
-Videos de YouTube verificados de canales reconocidos (AskDoctorJo, YogaRenew, HSS). IDs de ejercicios 8, 13, 22, 23 son los originales — pendiente de verificar.
+YouTube IDs de ejercicios 8, 13, 22, 23 sin verificar — pueden estar rotos.
 
 ## Motor de recomendación
 
-`recommend(answers)` aplana todas las respuestas en un array plano y puntúa cada ejercicio por `tags` (+3/tag). Bonificaciones extra: `crossfit`/`weightlifting` seleccionados → +4 a ejercicios con esos tags. Exclusión dura solo si condición coincide con `contraindications[]`. Mínimo 8 resultados garantizados.
+`recommend(answers)` en `App.jsx`: aplana respuestas → puntúa por `tags` (+3/tag) → bonifica crossfit/weightlifting (+4) → excluye duro si hay `contraindications[]` coincidentes → selección greedy por presupuesto de tiempo con límite creciente de ejercicios por categoría (`maxPerCat`: 2 → 3 → ∞) para forzar variedad.
+
+`TIME_BUDGETS = { rapida: 600, estandar: 900, larga: 1500, completa: 2700 }` (segundos).
+
+## Persistencia
+
+`localStorage` clave `"mobility_routine"` → `{date, answers, exerciseIds}`. Se valida contra la fecha del día; si es de ayer o antes, se ignora. La home muestra una tarjeta "Continuar rutina de hoy" si hay datos válidos.
+
+## Modo rutina secuencial (`routine_run`)
+
+`routineIdx` avanza ejercicio a ejercicio. Al completar el temporizador → `autoCountdown(5)` → avanza automáticamente. `autoRef` gestiona el timeout del countdown; se limpia en `advanceRoutine()` para evitar doble avance.
+
+## Multiidioma
+
+`lang` state (`"es"` | `"en"`). Contenido: `ex[lang].name`, `ex[lang].steps`, etc. Tags y `contraindications` son siempre en español (claves internas). UI vía `const t = S[lang]`. Categorías almacenadas en español; `catLabel(cat, lang)` traduce para mostrar; el filtro compara contra la clave española.
+
+## Responsive
+
+`useIsMobile()` hook (< 640px) basado en `window.innerWidth` con listener de resize. Usos:
+- Quiz móvil: `height: 100dvh`, scroll en opciones, botón sticky con gradiente al fondo
+- Quiz escritorio: layout natural, botón fluye tras las opciones
+- Biblioteca: `repeat(2, 1fr)` en móvil vs `auto-fill minmax(190px, 1fr)` en escritorio
+- Detalle: tabs con solo icono en móvil (`▶ / 📋 / ⚙️`), texto completo en escritorio
 
 ## YouTube embed
 
-Lazy: miniatura estática (`hqdefault.jpg`) hasta clic. Solo entonces monta el `<iframe autoplay=1>`. Si el ID es inválido, la miniatura carga rota pero la app no rompe.
-
-## Estilos
-
-100% inline styles. Sin CSS framework. `Palatino Linotype` serif. Paleta: fondo `#0d1a14`, acento `#5ba888`, superficie `rgba(255,255,255,0.035)`.
-
-`inset: 0` reemplazado por `top:0;right:0;bottom:0;left:0` en todo el código — compatible con iOS < 14.
+Lazy: miniatura `hqdefault.jpg` hasta clic → monta `<iframe autoplay=1>`. ID inválido → miniatura rota, app no rompe.
 
 ## Temporizador
 
-`useRef` para el `setTimeout` (no `setInterval`) — se limpia en el cleanup del `useEffect` para evitar memory leaks al cambiar de pantalla mientras corre.
+`useRef` con `setTimeout` (no `setInterval`) — cleanup en `useEffect` evita memory leaks al cambiar de pantalla con el timer activo. El mismo estado `timerLeft/timerRunning/timerDone` sirve para `detail` y `routine_run` (solo una pantalla activa a la vez).
 
 ## Decisiones técnicas
 
-- Sin React Router — estado `screen` es suficiente para 6 pantallas
-- Sin `useState` separado por pantalla — todo el estado vive en `App()`. Candidato a Context si crece
-- `variant.for[]` es solo display (chips de condición), no participa en la lógica de recomendación
-- `filterCat` = `null` significa "todos" — evita hardcodear el string "Todos"/"All" en la lógica
+- Sin React Router — `screen` state es suficiente para 7 pantallas
+- Todo el estado en `App()` — candidato a Context si crece más
+- `filterCat = null` significa "todos" — evita hardcodear "Todos"/"All" en lógica de filtro
+- `variant.for[]` es solo display (chips), no participa en recomendación
+- `inset: 0` → `top:0;right:0;bottom:0;left:0` en todo el código — compatibilidad iOS < 14
+- `100dvh` en quiz móvil (no `100vh`) — evita el salto cuando aparece/oculta la barra del navegador en Android
+
+## Pendiente
+
+- Verificar YouTube IDs de ejercicios 8, 13, 22, 23
+- Stats de home (`"40"`, `"9"`, `"80"`) hardcodeados — deberían derivarse de `EXERCISES.length` y `CATEGORY_KEYS.length`
 
 ## Desarrollo
 
 ```bash
-npm run dev      # Vite dev server
+npm run dev      # Vite → puerto 5173
 npm run build    # dist/
-npm run preview  # preview del build
+npm run preview  # preview del build → puerto 4173
 ```
