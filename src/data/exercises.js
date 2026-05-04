@@ -258,7 +258,7 @@ export const EXERCISES = [
     id: 8, icon: "⭕", level: "beginner", duration: 90, color: "#5b8fc4",
     tags: ["calentamiento", "sedentario", "oficina", "lumbar", "cadera"],
     contraindications: [],
-    youtubeId: "5LGUaAJFKO8",
+    youtubeId: "m_l9DCL2zL0",
     es: {
       name: "Círculos de Cadera de Pie", category: "Cadera",
       description: "Movilización articular circular que lubrica la articulación de la cadera activamente.",
@@ -438,7 +438,7 @@ export const EXERCISES = [
     id: 13, icon: "👀", level: "beginner", duration: 60, color: "#6a9e5b",
     tags: ["cuello", "movilidad_activa", "oficina", "sedentario"],
     contraindications: ["vértigo_severo"],
-    youtubeId: "M5LW6TfMaCk",
+    youtubeId: "PruXF-NE2zI",
     es: {
       name: "Rotación Cervical Activa", category: "Cuello",
       description: "Mantiene el rango de rotación cervical, esencial para la vida diaria.",
@@ -762,7 +762,7 @@ export const EXERCISES = [
     id: 22, icon: "🙌", level: "beginner", duration: 90, color: "#7b6fa0",
     tags: ["hombros", "sedentario", "movilidad_activa", "postura"],
     contraindications: [],
-    youtubeId: "gRd3aRHpUG4",
+    youtubeId: "pqChOpLBR-U",
     es: {
       name: "Elevación de Brazos Overhead", category: "Hombros",
       description: "Trabaja el rango activo de elevación del hombro, clave para la vida diaria.",
@@ -798,7 +798,7 @@ export const EXERCISES = [
     id: 23, icon: "📐", level: "intermediate", duration: 120, color: "#5ba888",
     tags: ["lumbar", "lateral", "corredor", "deportista", "columna"],
     contraindications: [],
-    youtubeId: "Bn8s8YA9PcU",
+    youtubeId: "sJCR9AZNjjY",
     es: {
       name: "Cuadrado Lumbar Lateral", category: "Columna",
       description: "Estira el cuadrado lumbar, músculo clave en el dolor de espalda baja lateral.",
