@@ -264,7 +264,13 @@ function SettingsModal({ onClose, lang, setLang, savedProfile, onNewRoutine, onR
 
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function App() {
-  const [lang, setLang] = useState("es");
+  const [lang, setLang] = useState(() => {
+    try {
+      const saved = localStorage.getItem("mobility_lang");
+      if (saved === "es" || saved === "en") return saved;
+    } catch {}
+    return navigator.language?.startsWith("en") ? "en" : "es";
+  });
   const [screen, setScreen] = useState("home");
   const [quizStep, setQuizStep] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -421,7 +427,7 @@ export default function App() {
   const settingsModal = showSettings && (
     <SettingsModal
       onClose={() => setShowSettings(false)}
-      lang={lang} setLang={setLang}
+      lang={lang} setLang={(l) => { setLang(l); try { localStorage.setItem("mobility_lang", l); } catch {} }}
       savedProfile={savedProfile}
       onNewRoutine={() => generateTodayRoutine(savedProfile)}
       onRetakeQuiz={() => { setQuizStep(0); setAnswers({}); setScreen("quiz"); }}
