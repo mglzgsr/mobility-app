@@ -221,12 +221,12 @@ function SettingsModal({ onClose, lang, setLang, savedProfile, onNewRoutine, onR
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               <button onClick={() => { onNewRoutine(); onClose(); }} style={{
                 width: "100%", background: accent, border: `1px solid ${accent}`,
-                borderRadius: 100, padding: "12px 20px", color: "#fff", fontSize: 14,
+                borderRadius: 100, padding: "10px 0", color: "#fff", fontSize: 13,
                 cursor: "pointer", fontFamily: "inherit", textAlign: "center"
               }}>🔄 {t.settings_new_routine}</button>
               <button onClick={() => { onRetakeQuiz(); onClose(); }} style={{
                 width: "100%", background: "transparent", border: "1px solid rgba(255,255,255,0.2)",
-                borderRadius: 100, padding: "12px 20px", color: text, fontSize: 14,
+                borderRadius: 100, padding: "10px 0", color: text, fontSize: 13,
                 cursor: "pointer", fontFamily: "inherit", textAlign: "center"
               }}>📝 {t.settings_retake}</button>
             </div>
