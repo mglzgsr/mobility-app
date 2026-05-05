@@ -14,6 +14,7 @@ function useIsMobile() {
 
 // ─── PERSISTENCE ──────────────────────────────────────────────────────────────
 const STORAGE_KEY = "mobility_routine";
+const PROFILE_KEY = "mobility_profile";
 
 function todayKey() {
   return new Date().toISOString().slice(0, 10);
@@ -44,6 +45,18 @@ function loadTodayRoutine() {
 
 function clearRoutine() {
   try { localStorage.removeItem(STORAGE_KEY); } catch {}
+}
+
+function saveProfile(answers) {
+  try { localStorage.setItem(PROFILE_KEY, JSON.stringify(answers)); } catch {}
+}
+
+function loadProfile() {
+  try { return JSON.parse(localStorage.getItem(PROFILE_KEY) || "null"); } catch { return null; }
+}
+
+function clearAll() {
+  try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(PROFILE_KEY); } catch {}
 }
 
 // ─── RECOMMENDATION ENGINE ────────────────────────────────────────────────────
@@ -134,20 +147,116 @@ function YouTubeEmbed({ videoId, color }) {
   );
 }
 
-// ─── LANG TOGGLE ──────────────────────────────────────────────────────────────
-function LangToggle({ lang, setLang, accent, muted, border }) {
+// ─── SETTINGS BUTTON ─────────────────────────────────────────────────────────
+function SettingsButton({ onClick, muted, border, accent }) {
   return (
-    <button onClick={() => setLang(l => l === "es" ? "en" : "es")} style={{
-      position: "fixed", top: 18, right: 20, zIndex: 100,
+    <button onClick={onClick} style={{
+      position: "fixed", top: 16, right: 18, zIndex: 100,
       background: "transparent", border: `1px solid ${border}`,
-      borderRadius: 100, padding: "5px 13px", color: muted,
-      fontSize: 11, letterSpacing: "0.15em", cursor: "pointer",
-      fontFamily: "inherit", transition: "all 0.2s"
+      borderRadius: "50%", width: 36, height: 36,
+      color: muted, fontSize: 16, cursor: "pointer",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      transition: "all 0.2s", fontFamily: "inherit"
     }}
-    onMouseEnter={e => { e.currentTarget.style.color = accent; e.currentTarget.style.borderColor = `${accent}60`; }}
+    onMouseEnter={e => { e.currentTarget.style.color = accent; e.currentTarget.style.borderColor = `${accent}50`; }}
     onMouseLeave={e => { e.currentTarget.style.color = muted; e.currentTarget.style.borderColor = border; }}>
-      {lang === "es" ? "EN" : "ES"}
+      ⚙
     </button>
+  );
+}
+
+// ─── SETTINGS MODAL ──────────────────────────────────────────────────────────
+function SettingsModal({ onClose, lang, setLang, savedProfile, onNewRoutine, onRetakeQuiz, onClearAll, t, accent, muted, border, bg, text, isMobile }) {
+  const [confirmClear, setConfirmClear] = useState(false);
+  return (
+    <>
+      {/* Overlay */}
+      <div onClick={onClose} style={{
+        position: "fixed", top: 0, right: 0, bottom: 0, left: 0,
+        background: "rgba(0,0,0,0.55)", zIndex: 200, backdropFilter: "blur(2px)"
+      }}/>
+      {/* Sheet */}
+      <div style={{
+        position: "fixed", zIndex: 201,
+        ...(isMobile
+          ? { bottom: 0, left: 0, right: 0, borderRadius: "20px 20px 0 0" }
+          : { top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 380, borderRadius: 20 }
+        ),
+        background: "#111f18", border: `1px solid ${border}`,
+        padding: "24px 24px 32px", fontFamily: "'Palatino Linotype', Palatino, serif"
+      }}>
+        {/* Handle bar (mobile) */}
+        {isMobile && <div style={{ width: 36, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.15)", margin: "0 auto 20px" }}/>}
+
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+          <span style={{ fontSize: 16, color: text, fontWeight: 400 }}>{t.settings_title}</span>
+          <button onClick={onClose} style={{ background: "none", border: "none", color: muted, cursor: "pointer", fontSize: 20, lineHeight: 1, padding: 4 }}>×</button>
+        </div>
+
+        {/* Language */}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: muted, marginBottom: 10 }}>{t.settings_lang}</div>
+          <div style={{ display: "flex", gap: 8 }}>
+            {["es", "en"].map(l => (
+              <button key={l} onClick={() => setLang(l)} style={{
+                flex: 1, padding: "10px 0", borderRadius: 10, cursor: "pointer",
+                fontFamily: "inherit", fontSize: 13, transition: "all 0.15s",
+                background: lang === l ? accent : "transparent",
+                border: `1px solid ${lang === l ? accent : border}`,
+                color: lang === l ? "#fff" : muted,
+              }}>{l === "es" ? "Español" : "English"}</button>
+            ))}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div style={{ height: 1, background: border, marginBottom: 20 }}/>
+
+        {/* Profile */}
+        <div style={{ marginBottom: 8 }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: muted, marginBottom: 10 }}>{t.settings_profile}</div>
+          {savedProfile ? (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <button onClick={() => { onNewRoutine(); onClose(); }} style={{
+                width: "100%", background: accent, border: "none", borderRadius: 10,
+                padding: "12px 16px", color: "#fff", fontSize: 14, cursor: "pointer",
+                fontFamily: "inherit", textAlign: "left"
+              }}>🔄 {t.settings_new_routine}</button>
+              <button onClick={() => { onRetakeQuiz(); onClose(); }} style={{
+                width: "100%", background: "transparent", border: `1px solid ${border}`,
+                borderRadius: 10, padding: "11px 16px", color: text, fontSize: 13,
+                cursor: "pointer", fontFamily: "inherit", textAlign: "left"
+              }}>📝 {t.settings_retake}</button>
+            </div>
+          ) : (
+            <p style={{ fontSize: 13, color: muted, margin: 0 }}>{t.settings_no_profile}</p>
+          )}
+        </div>
+
+        {/* Divider */}
+        <div style={{ height: 1, background: border, margin: "20px 0 16px" }}/>
+
+        {/* Clear data */}
+        {!confirmClear ? (
+          <button onClick={() => setConfirmClear(true)} style={{
+            background: "transparent", border: "none", color: muted,
+            fontSize: 12, cursor: "pointer", fontFamily: "inherit", padding: 0
+          }}>🗑 {t.settings_clear}</button>
+        ) : (
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <span style={{ fontSize: 12, color: muted, flex: 1 }}>¿Seguro?</span>
+            <button onClick={() => { onClearAll(); onClose(); }} style={{
+              background: "#c0392b", border: "none", borderRadius: 8, padding: "7px 14px",
+              color: "#fff", fontSize: 12, cursor: "pointer", fontFamily: "inherit"
+            }}>Sí, borrar</button>
+            <button onClick={() => setConfirmClear(false)} style={{
+              background: "transparent", border: `1px solid ${border}`, borderRadius: 8,
+              padding: "7px 14px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit"
+            }}>No</button>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
@@ -172,6 +281,9 @@ export default function App() {
   const [autoCountdown, setAutoCountdown] = useState(null); // null | number
   // Persistence
   const [savedRoutine, setSavedRoutine] = useState(() => loadTodayRoutine());
+  const [savedProfile, setSavedProfile] = useState(() => loadProfile());
+  // Settings modal
+  const [showSettings, setShowSettings] = useState(false);
 
   const timerRef = useRef(null);
   const autoRef = useRef(null);
@@ -222,9 +334,29 @@ export default function App() {
       const result = recommend(answers);
       setRecommended(result);
       saveRoutine(answers, result);
+      saveProfile(answers);
       setSavedRoutine({ answers, exercises: result });
+      setSavedProfile(answers);
       setScreen("results");
     }
+  };
+
+  const generateTodayRoutine = (profileAnswers) => {
+    const result = recommend(profileAnswers);
+    setRecommended(result);
+    setAnswers(profileAnswers);
+    saveRoutine(profileAnswers, result);
+    setSavedRoutine({ answers: profileAnswers, exercises: result });
+    setScreen("results");
+  };
+
+  const handleClearAll = () => {
+    clearAll();
+    setSavedRoutine(null);
+    setSavedProfile(null);
+    setRecommended([]);
+    setAnswers({});
+    setScreen("home");
   };
 
   const openEx = (ex) => {
@@ -280,10 +412,27 @@ export default function App() {
   const fmtMins = (s) => Math.round(s / 60);
   const levelLabel = (ex) => t[`level_${ex.level}`];
 
+  // ── SHARED UI ─────────────────────────────────────────────────────────────
+  const settingsBtn = (
+    <SettingsButton onClick={() => setShowSettings(true)} muted={muted} border={border} accent={accent} />
+  );
+  const settingsModal = showSettings && (
+    <SettingsModal
+      onClose={() => setShowSettings(false)}
+      lang={lang} setLang={setLang}
+      savedProfile={savedProfile}
+      onNewRoutine={() => generateTodayRoutine(savedProfile)}
+      onRetakeQuiz={() => { setQuizStep(0); setAnswers({}); setScreen("quiz"); }}
+      onClearAll={handleClearAll}
+      t={t} accent={accent} muted={muted} border={border} bg={bg} text={text}
+      isMobile={isMobile}
+    />
+  );
+
   // ── HOME ───────────────────────────────────────────────────────────────────
   if (screen === "home") return (
     <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", overflow: "hidden", position: "relative" }}>
-      <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
+      {settingsBtn}{settingsModal}
       <div style={{ position: "fixed", top: 0, right: 0, bottom: 0, left: 0, pointerEvents: "none" }}>
         <div style={{ position: "absolute", top: "-15%", left: "-5%", width: "60vw", height: "60vw", borderRadius: "50%", background: "radial-gradient(circle, rgba(91,168,136,0.08) 0%, transparent 70%)" }}/>
         <div style={{ position: "absolute", bottom: "-10%", right: "-5%", width: "45vw", height: "45vw", borderRadius: "50%", background: "radial-gradient(circle, rgba(123,111,160,0.06) 0%, transparent 70%)" }}/>
@@ -296,9 +445,9 @@ export default function App() {
         <h1 style={{ fontSize: "clamp(2.2rem,8vw,3.8rem)", fontWeight: 400, lineHeight: 1.05, margin: "0 0 18px", letterSpacing: "-0.02em" }}>
           {t.hero_title1}<br/><em style={{ color: accent, fontStyle: "italic" }}>{t.hero_title2}</em>
         </h1>
-        <p style={{ fontSize: 16, lineHeight: 1.8, color: muted, maxWidth: 440, marginBottom: 44 }}>{t.hero_desc}</p>
+        <p style={{ fontSize: 16, lineHeight: 1.8, color: muted, maxWidth: 440, marginBottom: 36 }}>{t.hero_desc}</p>
 
-        {/* Continue today's routine if saved */}
+        {/* Today's routine card (if exists) */}
         {savedRoutine && (
           <div style={{ background: `${accent}10`, border: `1px solid ${accent}30`, borderRadius: 16, padding: "16px 20px", marginBottom: 20 }}>
             <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: accent, marginBottom: 4 }}>
@@ -307,7 +456,7 @@ export default function App() {
             <div style={{ fontSize: 13, color: muted, marginBottom: 12 }}>
               {fmtMins(savedRoutine.exercises.reduce((s, e) => s + e.duration, 0))} min · {savedRoutine.exercises.length} {lang === "es" ? "ejercicios" : "exercises"}
             </div>
-            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <div style={{ display: "flex", gap: 8 }}>
               <button onClick={resumeSaved} style={{
                 background: accent, border: "none", borderRadius: 10, padding: "10px 20px",
                 color: "#fff", fontSize: 13, cursor: "pointer", fontFamily: "inherit", flex: 1
@@ -320,16 +469,29 @@ export default function App() {
           </div>
         )}
 
+        {/* Adaptive CTA: profile exists → "Nueva rutina", no profile → "Personalizar" */}
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 56 }}>
-          <button onClick={() => { setQuizStep(0); setAnswers({}); setScreen("quiz"); }} style={{
-            background: accent, border: "none", borderRadius: 100, padding: "14px 30px",
-            color: "#fff", fontSize: 15, cursor: "pointer", fontFamily: "inherit",
-            boxShadow: `0 4px 24px ${accent}40`, letterSpacing: "0.02em", transition: "all 0.2s"
-          }}
-          onMouseEnter={e => e.currentTarget.style.transform = "translateY(-2px)"}
-          onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}>
-            {t.btn_personalize}
-          </button>
+          {savedProfile && !savedRoutine ? (
+            <button onClick={() => generateTodayRoutine(savedProfile)} style={{
+              background: accent, border: "none", borderRadius: 100, padding: "14px 30px",
+              color: "#fff", fontSize: 15, cursor: "pointer", fontFamily: "inherit",
+              boxShadow: `0 4px 24px ${accent}40`, letterSpacing: "0.02em", transition: "all 0.2s"
+            }}
+            onMouseEnter={e => e.currentTarget.style.transform = "translateY(-2px)"}
+            onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}>
+              🔄 {t.settings_new_routine}
+            </button>
+          ) : !savedRoutine ? (
+            <button onClick={() => { setQuizStep(0); setAnswers({}); setScreen("quiz"); }} style={{
+              background: accent, border: "none", borderRadius: 100, padding: "14px 30px",
+              color: "#fff", fontSize: 15, cursor: "pointer", fontFamily: "inherit",
+              boxShadow: `0 4px 24px ${accent}40`, letterSpacing: "0.02em", transition: "all 0.2s"
+            }}
+            onMouseEnter={e => e.currentTarget.style.transform = "translateY(-2px)"}
+            onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}>
+              {t.btn_personalize}
+            </button>
+          ) : null}
           <button onClick={() => { setFilterCat(null); setScreen("library"); }} style={{
             background: "transparent", border: `1px solid ${border}`, borderRadius: 100,
             padding: "14px 28px", color: muted, fontSize: 15, cursor: "pointer", fontFamily: "inherit", transition: "all 0.2s"
@@ -372,7 +534,7 @@ export default function App() {
     if (isMobile) {
       return (
         <div style={{ height: "100dvh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column", overflow: "hidden" }}>
-          <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
+          {settingsBtn}{settingsModal}
           <div style={{ height: 3, background: "rgba(255,255,255,0.06)", flexShrink: 0 }}>
             <div style={{ height: "100%", width: `${(quizStep / QUESTIONS.length) * 100}%`, background: accent, transition: "width 0.4s", borderRadius: 2 }}/>
           </div>
@@ -423,7 +585,7 @@ export default function App() {
     // Desktop: natural scroll layout
     return (
       <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif" }}>
-        <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
+        {settingsBtn}{settingsModal}
         <div style={{ height: 3, background: "rgba(255,255,255,0.06)" }}>
           <div style={{ height: "100%", width: `${(quizStep / QUESTIONS.length) * 100}%`, background: accent, transition: "width 0.4s", borderRadius: 2 }}/>
         </div>
@@ -469,7 +631,7 @@ export default function App() {
   // ── LIST (results or library) ──────────────────────────────────────────────
   if (screen === "results" || screen === "library") return (
     <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif" }}>
-      <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
+      {settingsBtn}{settingsModal}
       <div style={{ maxWidth: 700, margin: "0 auto", padding: isMobile ? "0 14px" : "0 20px" }}>
         <div style={{ paddingTop: isMobile ? 24 : 36, paddingBottom: 20 }}>
           <button onClick={() => setScreen("home")} style={{ background: "none", border: "none", color: muted, cursor: "pointer", fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "inherit", padding: 0, marginBottom: 24 }}>{t.back_home}</button>
@@ -551,7 +713,7 @@ export default function App() {
       const totalMins = fmtMins(recommended.reduce((s, e) => s + e.duration, 0));
       return (
         <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 24px", textAlign: "center" }}>
-          <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
+          {settingsBtn}{settingsModal}
           <div style={{ fontSize: 72, marginBottom: 24 }}>🎉</div>
           <h2 style={{ fontSize: "clamp(1.4rem,5vw,2rem)", fontWeight: 400, margin: "0 0 12px" }}>{t.run_complete_title}</h2>
           <p style={{ fontSize: 13, color: muted, marginBottom: 4 }}>{t.run_complete_time}</p>
@@ -571,7 +733,7 @@ export default function App() {
 
     return (
       <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column" }}>
-        <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
+        {settingsBtn}{settingsModal}
 
         {/* Progress dots */}
         <div style={{ display: "flex", gap: 5, padding: "20px 24px 0", justifyContent: "center" }}>
@@ -685,7 +847,7 @@ export default function App() {
 
     return (
       <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif" }}>
-        <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
+        {settingsBtn}{settingsModal}
         <div style={{ maxWidth: 660, margin: "0 auto", padding: isMobile ? "0 14px" : "0 20px" }}>
           <div style={{ paddingTop: isMobile ? 20 : 32, paddingBottom: 16 }}>
             <button onClick={() => setScreen(recommended.length ? "results" : "library")} style={{ background: "none", border: "none", color: muted, cursor: "pointer", fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "inherit", padding: 0 }}>{t.back_exercise}</button>
@@ -820,7 +982,7 @@ export default function App() {
     const isLast = guideStep === exl.steps.length - 1;
     return (
       <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column" }}>
-        <LangToggle lang={lang} setLang={setLang} accent={accent} muted={muted} border={border} />
+        {settingsBtn}{settingsModal}
         <div style={{ display: "flex" }}>
           {exl.steps.map((_, i) => (
             <div key={i} style={{ height: 3, flex: 1, background: i <= guideStep ? ex.color : "rgba(255,255,255,0.07)", transition: "background 0.4s" }}/>

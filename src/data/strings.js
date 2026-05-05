@@ -60,6 +60,13 @@ export const S = {
     run_complete_time: "Tiempo total",
     run_complete_back: "Ver resumen",
     run_complete_retry: "Repetir rutina",
+    settings_title: "Ajustes",
+    settings_lang: "Idioma",
+    settings_profile: "Mi perfil",
+    settings_retake: "Actualizar perfil",
+    settings_new_routine: "Nueva rutina de hoy",
+    settings_no_profile: "Haz el test para guardar tu perfil",
+    settings_clear: "Borrar mis datos",
   },
   en: {
     lang_toggle: "ES",
@@ -122,6 +129,13 @@ export const S = {
     run_complete_time: "Total time",
     run_complete_back: "See summary",
     run_complete_retry: "Repeat routine",
+    settings_title: "Settings",
+    settings_lang: "Language",
+    settings_profile: "My profile",
+    settings_retake: "Update profile",
+    settings_new_routine: "New routine today",
+    settings_no_profile: "Take the quiz to save your profile",
+    settings_clear: "Clear my data",
   }
 };
 
