@@ -201,10 +201,10 @@ function SettingsModal({ onClose, lang, setLang, savedProfile, onNewRoutine, onR
           <div style={{ display: "flex", gap: 8 }}>
             {["es", "en"].map(l => (
               <button key={l} onClick={() => setLang(l)} style={{
-                flex: 1, padding: "10px 0", borderRadius: 10, cursor: "pointer",
+                flex: 1, padding: "10px 0", borderRadius: 100, cursor: "pointer",
                 fontFamily: "inherit", fontSize: 13, transition: "all 0.15s",
                 background: lang === l ? accent : "transparent",
-                border: `1px solid ${lang === l ? accent : border}`,
+                border: `1px solid ${lang === l ? accent : "rgba(255,255,255,0.2)"}`,
                 color: lang === l ? "#fff" : muted,
               }}>{l === "es" ? "Español" : "English"}</button>
             ))}
