@@ -47,6 +47,19 @@ export const S = {
     results_duration: "min de rutina",
     results_exercises: "ejercicios",
     results_hint: "Seleccionados para encajar en tu tiempo con variedad de zonas.",
+    btn_run_routine: "▶ Iniciar rutina completa",
+    home_continue: "Continuar rutina de hoy",
+    home_continue_sub: "min · ",
+    home_continue_exercises: "ejercicios",
+    run_exercise: "Ejercicio",
+    run_rest_title: "¡Bien hecho!",
+    run_rest_next: "Siguiente →",
+    run_auto: "Siguiente automático en",
+    run_skip: "Saltar",
+    run_complete_title: "¡Rutina completada! 🎉",
+    run_complete_time: "Tiempo total",
+    run_complete_back: "Ver resumen",
+    run_complete_retry: "Repetir rutina",
   },
   en: {
     lang_toggle: "ES",
@@ -96,13 +109,26 @@ export const S = {
     results_duration: "min routine",
     results_exercises: "exercises",
     results_hint: "Selected to fit your time with variety across body zones.",
+    btn_run_routine: "▶ Start full routine",
+    home_continue: "Continue today's routine",
+    home_continue_sub: "min · ",
+    home_continue_exercises: "exercises",
+    run_exercise: "Exercise",
+    run_rest_title: "Nice work!",
+    run_rest_next: "Next →",
+    run_auto: "Auto-next in",
+    run_skip: "Skip",
+    run_complete_title: "Routine complete! 🎉",
+    run_complete_time: "Total time",
+    run_complete_back: "See summary",
+    run_complete_retry: "Repeat routine",
   }
 };
 
 // Category order for filter display (canonical keys are always Spanish)
 export const CATEGORY_KEYS = [
   "Columna", "Cadera", "Hombros", "Cuello",
-  "Tobillo y Pie", "Muñeca", "Cadena Posterior", "CrossFit"
+  "Tobillo y Pie", "Muñeca", "Rodilla", "Cadena Posterior", "CrossFit"
 ];
 
 export const QUESTIONS = [
@@ -165,6 +191,11 @@ export const QUESTIONS = [
         value: "nadador",
         label: { es: "Natación / Deportes de agua", en: "Swimming / Water sports" },
         sub: { es: "", en: "" }
+      },
+      {
+        value: "padel",
+        label: { es: "Pádel / Tenis", en: "Padel / Tennis" },
+        sub: { es: "Deporte de raqueta", en: "Racket sport" }
       },
       {
         value: "ninguna",

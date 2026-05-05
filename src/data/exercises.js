@@ -1449,6 +1449,298 @@ export const EXERCISES = [
         { name: "Lying on back", for: ["maximum control"], description: "Gravity acts as gentle resistance. Easier to control the range." }
       ]
     }
+  },
+
+  // ─── RUNNING ──────────────────────────────────────────────────────────────
+  {
+    id: 41, icon: "🦵", level: "beginner", duration: 60, color: "#5ba888",
+    tags: ["corredor", "tobillo", "pantorrilla", "calentamiento", "cadena_posterior"],
+    contraindications: [],
+    youtubeId: "i1eJqJ3v3lQ",
+    es: {
+      name: "Estiramiento de Pantorrilla", category: "Tobillo y Pie",
+      description: "Estira el gastrocnemio y el sóleo, los músculos más solicitados en el running y ciclismo.",
+      benefits: ["Previene contracturas de gemelo", "Reduce riesgo de fascitis plantar", "Mejora la dorsiflexión de tobillo"],
+      steps: [
+        "De pie frente a una pared, coloca las manos a la altura del pecho",
+        "Lleva una pierna atrás con el talón apoyado en el suelo y rodilla estirada",
+        "Inclínate hacia la pared hasta sentir el estiramiento en la pantorrilla. 30–45 s",
+        "Para estirar el sóleo: dobla ligeramente la rodilla trasera. 30 s por lado"
+      ],
+      variants: [
+        { name: "En escalón", for: ["mayor amplitud"], description: "Baja el talón por el borde de un escalón. Rango completo de dorsiflexión." },
+        { name: "Sentado con toalla", for: ["post-cirugía", "sin poder cargar peso"], description: "Estira la toalla alrededor del pie y tira suavemente hacia ti." }
+      ]
+    },
+    en: {
+      name: "Calf Stretch", category: "Ankle & Foot",
+      description: "Stretches the gastrocnemius and soleus, the most used muscles in running and cycling.",
+      benefits: ["Prevents calf cramps", "Reduces risk of plantar fasciitis", "Improves ankle dorsiflexion"],
+      steps: [
+        "Stand facing a wall, place hands at chest height",
+        "Step one leg back with the heel flat on the floor and knee straight",
+        "Lean toward the wall until you feel a stretch in the calf. 30–45 sec",
+        "For the soleus: slightly bend the back knee. 30 sec per side"
+      ],
+      variants: [
+        { name: "On a step", for: ["greater range"], description: "Lower the heel off the edge of a step for full dorsiflexion range." },
+        { name: "Seated with towel", for: ["post-surgery", "non-weight bearing"], description: "Loop a towel around the foot and gently pull toward you." }
+      ]
+    }
+  },
+  {
+    id: 42, icon: "🏃", level: "beginner", duration: 60, color: "#c47c3e",
+    tags: ["corredor", "cadera", "banda_iliotibial", "rodilla"],
+    contraindications: [],
+    youtubeId: "wzDoSQ8-GWY",
+    es: {
+      name: "Estiramiento de Banda Iliotibial", category: "Cadera",
+      description: "Estira la banda IT y el tensor de la fascia lata (TFL), responsables del síndrome de la cintilla iliotibial en corredores.",
+      benefits: ["Previene síndrome de la cintilla en corredores", "Alivia dolor lateral de rodilla", "Mejora alineación de cadera y rodilla"],
+      steps: [
+        "De pie, cruza la pierna derecha por delante de la izquierda",
+        "Extiende el brazo derecho hacia arriba e inclínate lateralmente hacia la izquierda",
+        "Siente el estiramiento en la cadera y muslo externo derecho. 30–40 s",
+        "Cambia de lado. 2–3 repeticiones por lado"
+      ],
+      variants: [
+        { name: "Tumbado con rodillo", for: ["mayor liberación miofascial"], description: "Rueda lentamente sobre el muslo lateral con un foam roller." },
+        { name: "En el suelo", for: ["dificultad de equilibrio"], description: "Tumbado boca arriba, cruza una pierna sobre la otra y empuja la rodilla al suelo." }
+      ]
+    },
+    en: {
+      name: "IT Band Stretch", category: "Hip",
+      description: "Stretches the IT band and tensor fasciae latae (TFL), responsible for iliotibial band syndrome in runners.",
+      benefits: ["Prevents IT band syndrome in runners", "Relieves lateral knee pain", "Improves hip and knee alignment"],
+      steps: [
+        "Stand and cross the right leg in front of the left",
+        "Extend the right arm overhead and lean laterally to the left",
+        "Feel the stretch in the right hip and outer thigh. 30–40 sec",
+        "Switch sides. 2–3 reps per side"
+      ],
+      variants: [
+        { name: "With foam roller", for: ["greater myofascial release"], description: "Slowly roll over the lateral thigh with a foam roller." },
+        { name: "On the floor", for: ["balance difficulty"], description: "Lie on your back, cross one leg over the other and push the knee to the floor." }
+      ]
+    }
+  },
+  {
+    id: 43, icon: "🔺", level: "beginner", duration: 90, color: "#7b6fa0",
+    tags: ["corredor", "cadera", "ciático", "piriforme", "lumbar"],
+    contraindications: [],
+    youtubeId: "-g0nuyTHMrI",
+    es: {
+      name: "Estiramiento del Piriforme", category: "Cadera",
+      description: "Libera el músculo piriforme, causa frecuente de dolor ciático en corredores y ciclistas.",
+      benefits: ["Alivia dolor ciático", "Mejora rotación externa de cadera", "Reduce tensión glútea profunda"],
+      steps: [
+        "Túmbate boca arriba con las rodillas dobladas y pies en el suelo",
+        "Coloca el tobillo derecho sobre la rodilla izquierda (posición figura-4)",
+        "Entrelaza las manos detrás del muslo izquierdo y acerca ambas piernas al pecho",
+        "Mantén 30–45 segundos. Cambia de lado"
+      ],
+      variants: [
+        { name: "Sentado en silla", for: ["dificultad en suelo", "oficina"], description: "Siéntate al borde de la silla y cruza el tobillo sobre la rodilla contraria. Inclínate suavemente hacia adelante." },
+        { name: "De pie contra la pared", for: ["rigidez extrema de cadera"], description: "Apoya la espalda en la pared y cruza el tobillo sobre la rodilla opuesta bajando en cuclillas parcial." }
+      ]
+    },
+    en: {
+      name: "Piriformis Stretch", category: "Hip",
+      description: "Releases the piriformis muscle, a frequent cause of sciatic pain in runners and cyclists.",
+      benefits: ["Relieves sciatic pain", "Improves hip external rotation", "Reduces deep glute tension"],
+      steps: [
+        "Lie on your back with knees bent and feet on the floor",
+        "Place the right ankle over the left knee (figure-4 position)",
+        "Interlace hands behind the left thigh and draw both legs toward your chest",
+        "Hold 30–45 seconds. Switch sides"
+      ],
+      variants: [
+        { name: "Seated in chair", for: ["difficulty on floor", "office"], description: "Sit at the edge of a chair and cross the ankle over the opposite knee. Gently lean forward." },
+        { name: "Standing against wall", for: ["extreme hip stiffness"], description: "Lean back against a wall, cross ankle over opposite knee and do a partial squat." }
+      ]
+    }
+  },
+  {
+    id: 44, icon: "🏋️", level: "beginner", duration: 60, color: "#5b8fc4",
+    tags: ["corredor", "cadera", "flexor_cadera", "lumbar", "sedentario"],
+    contraindications: [],
+    youtubeId: "tsGPYSQbZx4",
+    es: {
+      name: "Estiramiento de Flexor de Cadera en Zancada", category: "Cadera",
+      description: "Estira el psoas ilíaco y el recto femoral, tensos por correr o por pasar muchas horas sentado.",
+      benefits: ["Alivia dolor lumbar por acortamiento del psoas", "Mejora longitud de zancada", "Contrarresta el sedentarismo"],
+      steps: [
+        "Arrodíllate con la rodilla derecha en el suelo y el pie izquierdo adelantado",
+        "Mantén el torso erguido y empuja la cadera hacia adelante suavemente",
+        "Siente el estiramiento en la parte delantera de la cadera derecha",
+        "Mantén 30–40 segundos. Cambia de lado. 2–3 series"
+      ],
+      variants: [
+        { name: "Con apoyo en silla", for: ["equilibrio", "principiante"], description: "Apoya una mano en la silla para estabilizarte mientras estiras." },
+        { name: "Con inclinación lateral", for: ["estiramiento de cuadrado lumbar"], description: "En posición de zancada, eleva el brazo del mismo lado que la rodilla en el suelo e inclínate levemente al lado contrario." }
+      ]
+    },
+    en: {
+      name: "Kneeling Hip Flexor Stretch", category: "Hip",
+      description: "Stretches the iliopsoas and rectus femoris, tight from running or prolonged sitting.",
+      benefits: ["Relieves low back pain from tight psoas", "Improves stride length", "Counteracts sedentary posture"],
+      steps: [
+        "Kneel with the right knee on the floor and left foot forward",
+        "Keep torso upright and gently push the hip forward",
+        "Feel the stretch in the front of the right hip",
+        "Hold 30–40 seconds. Switch sides. 2–3 sets"
+      ],
+      variants: [
+        { name: "With chair support", for: ["balance", "beginner"], description: "Rest one hand on a chair for stability while stretching." },
+        { name: "With lateral lean", for: ["quadratus lumborum stretch"], description: "In the lunge position, raise the arm on the same side as the floor knee and lean slightly to the opposite side." }
+      ]
+    }
+  },
+
+  // ─── PÁDEL ──────────────────────────────────────────────────────────────────
+  {
+    id: 45, icon: "🔄", level: "beginner", duration: 90, color: "#5ba888",
+    tags: ["padel", "columna", "movilidad_toracica", "crossfit", "overhead", "deportista"],
+    contraindications: [],
+    youtubeId: "snzLuyYgbVI",
+    es: {
+      name: "Rotación Torácica en Cuadrupedia", category: "Columna",
+      description: "Moviliza la columna torácica en rotación, fundamental para el swing y el remate en pádel y tenis.",
+      benefits: ["Aumenta rango de rotación en el swing", "Descarga la zona lumbar al rotar", "Previene lesiones de hombro por compensación"],
+      steps: [
+        "En cuadrupedia, coloca la mano derecha detrás de la cabeza",
+        "Rota el codo derecho hacia el suelo (rotación interna). Sigue el movimiento con los ojos",
+        "Abre hacia arriba rotando el codo hacia el techo. Llega al máximo rango",
+        "10 repeticiones lentas por lado. 2–3 series"
+      ],
+      variants: [
+        { name: "Sentado con palo", for: ["sin poder ir al suelo", "oficina"], description: "Sentado en silla, cruza los brazos sobre el pecho con un palo. Rota el torso de lado a lado." },
+        { name: "Tumbado de lado", for: ["mayor apertura costal"], description: "Tumbado de lado con rodillas dobladas a 90°. Rota el brazo superior abriendo el pecho hacia atrás." }
+      ]
+    },
+    en: {
+      name: "Thoracic Rotation in Quadruped", category: "Spine",
+      description: "Mobilizes the thoracic spine in rotation, fundamental for the swing and smash in padel and tennis.",
+      benefits: ["Increases rotation range in the swing", "Offloads the lumbar spine during rotation", "Prevents shoulder injuries from compensation"],
+      steps: [
+        "In quadruped, place the right hand behind your head",
+        "Rotate the right elbow toward the floor (internal rotation). Follow with your eyes",
+        "Open upward rotating the elbow toward the ceiling. Reach full range",
+        "10 slow reps per side. 2–3 sets"
+      ],
+      variants: [
+        { name: "Seated with stick", for: ["cannot go to floor", "office"], description: "Seated on a chair, cross arms over chest with a stick. Rotate the torso side to side." },
+        { name: "Side-lying", for: ["greater rib opening"], description: "Lie on your side with knees bent at 90°. Rotate the top arm opening the chest backward." }
+      ]
+    }
+  },
+  {
+    id: 46, icon: "🚪", level: "beginner", duration: 60, color: "#c47c3e",
+    tags: ["padel", "hombros", "pectoral", "movilidad_activa", "sedentario", "postura"],
+    contraindications: ["manguito"],
+    youtubeId: "jpk0JpbTfO0",
+    es: {
+      name: "Apertura de Pecho en Marco de Puerta", category: "Hombros",
+      description: "Estira el pectoral mayor y el hombro anterior, tensionados por el gesto repetitivo del servicio y el golpe de derecha.",
+      benefits: ["Abre el pecho y los hombros", "Corrige postura en cifosis", "Previene impingement de hombro en deportistas de raqueta"],
+      steps: [
+        "Sitúate en el marco de una puerta con los codos a 90° apoyados en el marco",
+        "Da un pequeño paso hacia adelante hasta sentir el estiramiento en el pecho",
+        "Mantén 20–30 segundos con el pecho abierto y los omóplatos juntos",
+        "Varía la altura de los brazos (más arriba, más abajo) para diferentes haces del pectoral"
+      ],
+      variants: [
+        { name: "Con un brazo", for: ["asimetría", "lesión unilateral"], description: "Estira un pectoral a la vez apoyando solo un antebrazo en la pared." },
+        { name: "Con banda", for: ["sin marco disponible"], description: "Ancla una banda a la altura del hombro y da un paso hacia adelante girando el torso." }
+      ]
+    },
+    en: {
+      name: "Doorway Chest Stretch", category: "Shoulders",
+      description: "Stretches the pectoralis major and anterior shoulder, stressed by repetitive serving and forehand strokes.",
+      benefits: ["Opens chest and shoulders", "Corrects kyphotic posture", "Prevents shoulder impingement in racket sport athletes"],
+      steps: [
+        "Stand in a doorway with elbows at 90° against the frame",
+        "Take a small step forward until you feel a stretch across the chest",
+        "Hold 20–30 seconds with chest open and shoulder blades squeezed together",
+        "Vary arm height (higher, lower) to target different pectoral fibers"
+      ],
+      variants: [
+        { name: "One arm", for: ["asymmetry", "unilateral injury"], description: "Stretch one side at a time with just one forearm on the wall." },
+        { name: "With band", for: ["no doorframe available"], description: "Anchor a band at shoulder height and step forward rotating the torso." }
+      ]
+    }
+  },
+  {
+    id: 47, icon: "↔️", level: "beginner", duration: 90, color: "#7b6fa0",
+    tags: ["padel", "cadera", "aductores", "movilidad_lateral", "deportista", "corredor"],
+    contraindications: [],
+    youtubeId: "nsHxDciEuOk",
+    es: {
+      name: "Zancada Lateral / Aductores", category: "Cadera",
+      description: "Moviliza los aductores y prepara la cadera para el movimiento lateral explosivo característico del pádel.",
+      benefits: ["Mejora el rango de movimiento lateral", "Previene lesiones de aductor", "Activa la cadera para cambios de dirección"],
+      steps: [
+        "De pie con piernas muy abiertas (el doble del ancho de hombros)",
+        "Desplaza el peso hacia la derecha doblando la rodilla derecha, pie izquierdo en el suelo",
+        "Mantén el torso erguido y la espalda plana. Siente el estiramiento en el muslo interno izquierdo",
+        "10 repeticiones por lado, lentas y controladas"
+      ],
+      variants: [
+        { name: "Con apoyo en pared", for: ["principiante", "equilibrio"], description: "Coloca una mano en la pared para equilibrarte mientras realizas la zancada lateral." },
+        { name: "Con pausa en el punto más bajo", for: ["mayor amplitud"], description: "Mantén 3–5 segundos en la posición de máximo estiramiento antes de volver." }
+      ]
+    },
+    en: {
+      name: "Lateral Lunge / Adductor Stretch", category: "Hip",
+      description: "Mobilizes the adductors and prepares the hip for the explosive lateral movement characteristic of padel.",
+      benefits: ["Improves lateral range of motion", "Prevents adductor injuries", "Activates the hip for direction changes"],
+      steps: [
+        "Stand with legs very wide apart (double shoulder width)",
+        "Shift weight to the right bending the right knee, left foot flat on floor",
+        "Keep torso upright and back flat. Feel the stretch in the left inner thigh",
+        "10 reps per side, slow and controlled"
+      ],
+      variants: [
+        { name: "With wall support", for: ["beginner", "balance"], description: "Place one hand on the wall for balance while performing the lateral lunge." },
+        { name: "With pause at bottom", for: ["greater range"], description: "Hold 3–5 seconds at the deepest stretch position before returning." }
+      ]
+    }
+  },
+  {
+    id: 48, icon: "🏓", level: "beginner", duration: 60, color: "#5b8fc4",
+    tags: ["padel", "muñeca", "codo", "deportista", "teclado", "sedentario"],
+    contraindications: [],
+    youtubeId: "Qtv7XHinNjg",
+    es: {
+      name: "Desviación Radial y Cubital de Muñeca", category: "Muñeca",
+      description: "Moviliza la muñeca en los planos de desviación que se usan en el agarre y los golpes de raqueta.",
+      benefits: ["Mantiene el rango lateral de muñeca", "Previene epicondilitis y tendinitis de muñeca", "Mejora el control del golpe en pádel y tenis"],
+      steps: [
+        "Codo doblado a 90° apoyado en el muslo o mesa, palma mirando hacia abajo",
+        "Desplaza la muñeca hacia el pulgar (desviación radial) hasta el límite. Mantén 2 s",
+        "Desplaza hacia el meñique (desviación cubital) hasta el límite. Mantén 2 s",
+        "10 repeticiones lentas por lado. Puede hacerse con una raqueta para mayor palanca"
+      ],
+      variants: [
+        { name: "Con palma hacia arriba", for: ["mayor activación de flexores"], description: "Supina el antebrazo (palma arriba) y repite el movimiento para trabajar los flexores en otra posición." },
+        { name: "Con raqueta", for: ["deportista", "transferencia específica"], description: "Sujeta la raqueta por el mango y realiza las desviaciones con su peso. Aumenta la demanda progresivamente." }
+      ]
+    },
+    en: {
+      name: "Wrist Radial & Ulnar Deviation", category: "Wrist",
+      description: "Mobilizes the wrist in the deviation planes used in racket grip and strokes.",
+      benefits: ["Maintains lateral wrist range", "Prevents epicondylitis and wrist tendinitis", "Improves stroke control in padel and tennis"],
+      steps: [
+        "Elbow bent at 90° resting on thigh or table, palm facing down",
+        "Move the wrist toward the thumb (radial deviation) to the limit. Hold 2 sec",
+        "Move toward the little finger (ulnar deviation) to the limit. Hold 2 sec",
+        "10 slow reps per side. Can be done with a racket for more leverage"
+      ],
+      variants: [
+        { name: "Palm facing up", for: ["greater flexor activation"], description: "Supinate the forearm (palm up) and repeat for flexors in a different position." },
+        { name: "With racket", for: ["athlete", "sport-specific transfer"], description: "Hold the racket by the grip and perform deviations with its weight. Gradually increase demand." }
+      ]
+    }
   }
 ];
 

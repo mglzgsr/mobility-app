@@ -64,6 +64,8 @@ function recommend(answers) {
     if (flat.includes("relajacion") && ex.tags.includes("nocturno")) score += 2;
     if ((flat.includes("crossfit") || flat.includes("weightlifting")) && ex.tags.includes("crossfit")) score += 4;
     if (flat.includes("weightlifting") && ex.tags.includes("weightlifting")) score += 4;
+    if (flat.includes("padel") && ex.tags.includes("padel")) score += 4;
+    if (flat.includes("corredor") && ex.tags.includes("corredor")) score += 4;
     return { ...ex, score: Math.max(score, 0.1) };
   });
 
@@ -299,18 +301,20 @@ export default function App() {
         {/* Continue today's routine if saved */}
         {savedRoutine && (
           <div style={{ background: `${accent}10`, border: `1px solid ${accent}30`, borderRadius: 16, padding: "16px 20px", marginBottom: 20 }}>
-            <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: accent, marginBottom: 6 }}>● {t.home_continue}</div>
-            <div style={{ fontSize: 13, color: muted, marginBottom: 12 }}>
-              {fmtMins(savedRoutine.exercises.reduce((s, e) => s + e.duration, 0))} {t.home_continue_sub}{savedRoutine.exercises.length} {t.home_continue_exercises}
+            <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: accent, marginBottom: 4 }}>
+              ● {lang === "es" ? "Rutina de hoy" : "Today's routine"}
             </div>
-            <div style={{ display: "flex", gap: 8 }}>
+            <div style={{ fontSize: 13, color: muted, marginBottom: 12 }}>
+              {fmtMins(savedRoutine.exercises.reduce((s, e) => s + e.duration, 0))} min · {savedRoutine.exercises.length} {lang === "es" ? "ejercicios" : "exercises"}
+            </div>
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
               <button onClick={resumeSaved} style={{
-                background: accent, border: "none", borderRadius: 100, padding: "9px 20px",
-                color: "#fff", fontSize: 13, cursor: "pointer", fontFamily: "inherit"
-              }}>{t.btn_run_routine}</button>
+                background: accent, border: "none", borderRadius: 10, padding: "10px 20px",
+                color: "#fff", fontSize: 13, cursor: "pointer", fontFamily: "inherit", flex: 1
+              }}>▶ {lang === "es" ? "Continuar" : "Continue"}</button>
               <button onClick={() => { clearRoutine(); setSavedRoutine(null); }} style={{
-                background: "transparent", border: `1px solid ${border}`, borderRadius: 100,
-                padding: "9px 16px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit"
+                background: "transparent", border: `1px solid ${border}`, borderRadius: 10,
+                padding: "10px 14px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit"
               }}>✕</button>
             </div>
           </div>
@@ -336,7 +340,7 @@ export default function App() {
           </button>
         </div>
         <div style={{ display: "flex", gap: 36, paddingTop: 28, borderTop: `1px solid ${border}` }}>
-          {[["40", t.stat_exercises], ["9", t.stat_zones], ["80", t.stat_variants]].map(([n, l]) => (
+          {[["48", t.stat_exercises], ["9", t.stat_zones], ["90", t.stat_variants]].map(([n, l]) => (
             <div key={l}>
               <div style={{ fontSize: "clamp(1.5rem,4vw,2rem)", color: accent, fontStyle: "italic", lineHeight: 1 }}>{n}</div>
               <div style={{ fontSize: 11, color: muted, letterSpacing: "0.12em", textTransform: "uppercase", marginTop: 4 }}>{l}</div>
@@ -478,15 +482,17 @@ export default function App() {
                 </em>{" "}{t.results_duration}
               </h2>
               <p style={{ fontSize: 13, color: muted, margin: "0 0 4px" }}>{recommended.length} {t.results_exercises}</p>
-              <p style={{ fontSize: 13, color: muted, margin: "0 0 16px" }}>{t.results_hint}</p>
-              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                <button onClick={startRoutine} style={{
-                  background: accent, border: "none", borderRadius: 100, padding: "10px 22px",
-                  color: "#fff", fontSize: 13, cursor: "pointer", fontFamily: "inherit",
-                  boxShadow: `0 0 20px ${accent}30`
-                }}>{t.btn_run_routine}</button>
-                <button onClick={() => { setQuizStep(0); setAnswers({}); setScreen("quiz"); }} style={{ background: "none", border: `1px solid ${border}`, borderRadius: 100, padding: "10px 18px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>{t.btn_retake}</button>
-                <button onClick={() => { setFilterCat(null); setScreen("library"); }} style={{ background: "none", border: `1px solid ${border}`, borderRadius: 100, padding: "10px 18px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>{t.btn_all}</button>
+              <p style={{ fontSize: 13, color: muted, margin: "0 0 20px" }}>{t.results_hint}</p>
+              <button onClick={startRoutine} style={{
+                display: "block", width: "100%", background: accent, border: "none",
+                borderRadius: 14, padding: "16px 24px", color: "#fff",
+                fontSize: 15, cursor: "pointer", fontFamily: "inherit",
+                boxShadow: `0 4px 24px ${accent}40`, marginBottom: 10,
+                textAlign: "center", letterSpacing: "0.02em"
+              }}>▶ {t.btn_run_routine.replace("▶ ", "").replace("▶", "")}</button>
+              <div style={{ display: "flex", gap: 8 }}>
+                <button onClick={() => { setQuizStep(0); setAnswers({}); setScreen("quiz"); }} style={{ background: "none", border: `1px solid ${border}`, borderRadius: 100, padding: "9px 16px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit", flex: 1 }}>{t.btn_retake}</button>
+                <button onClick={() => { setFilterCat(null); setScreen("library"); }} style={{ background: "none", border: `1px solid ${border}`, borderRadius: 100, padding: "9px 16px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit", flex: 1 }}>{t.btn_all}</button>
               </div>
             </>
           ) : (
@@ -627,8 +633,9 @@ export default function App() {
                     {autoCountdown !== null && (
                       <button onClick={() => { clearTimeout(autoRef.current); setAutoCountdown(null); }} style={{
                         background: "transparent", border: `1px solid ${border}`, borderRadius: 100,
-                        padding: "8px 14px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit"
-                      }}>⏸</button>
+                        padding: "8px 16px", color: text, fontSize: 12, cursor: "pointer", fontFamily: "inherit",
+                        opacity: 0.7
+                      }}>⏸ {lang === "es" ? "Pausar" : "Pause"}</button>
                     )}
                   </div>
                 </>
@@ -645,8 +652,9 @@ export default function App() {
                   }}>{t.btn_reset}</button>
                   <button onClick={advanceRoutine} style={{
                     background: "transparent", border: `1px solid ${border}`, borderRadius: 100,
-                    padding: "8px 14px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit"
-                  }}>{t.run_skip}</button>
+                    padding: "8px 16px", color: text, fontSize: 12, cursor: "pointer", fontFamily: "inherit",
+                    opacity: 0.7
+                  }}>{t.run_skip} →</button>
                 </div>
               )}
             </div>
