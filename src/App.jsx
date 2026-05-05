@@ -79,6 +79,8 @@ function recommend(answers) {
     if (flat.includes("weightlifting") && ex.tags.includes("weightlifting")) score += 4;
     if (flat.includes("padel") && ex.tags.includes("padel")) score += 4;
     if (flat.includes("corredor") && ex.tags.includes("corredor")) score += 4;
+    if (flat.includes("hyrox") && ex.tags.includes("hyrox")) score += 4;
+    if (flat.includes("judo") && ex.tags.includes("judo")) score += 4;
     return { ...ex, score: Math.max(score, 0.1) };
   });
 
@@ -218,14 +220,14 @@ function SettingsModal({ onClose, lang, setLang, savedProfile, onNewRoutine, onR
           {savedProfile ? (
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               <button onClick={() => { onNewRoutine(); onClose(); }} style={{
-                width: "100%", background: accent, border: "none", borderRadius: 10,
-                padding: "12px 16px", color: "#fff", fontSize: 14, cursor: "pointer",
-                fontFamily: "inherit", textAlign: "left"
+                width: "100%", background: accent, border: "none", borderRadius: 100,
+                padding: "12px 20px", color: "#fff", fontSize: 14, cursor: "pointer",
+                fontFamily: "inherit", textAlign: "center"
               }}>🔄 {t.settings_new_routine}</button>
               <button onClick={() => { onRetakeQuiz(); onClose(); }} style={{
                 width: "100%", background: "transparent", border: `1px solid ${border}`,
-                borderRadius: 10, padding: "11px 16px", color: text, fontSize: 13,
-                cursor: "pointer", fontFamily: "inherit", textAlign: "left"
+                borderRadius: 100, padding: "11px 20px", color: text, fontSize: 13,
+                cursor: "pointer", fontFamily: "inherit", textAlign: "center"
               }}>📝 {t.settings_retake}</button>
             </div>
           ) : (
@@ -246,12 +248,12 @@ function SettingsModal({ onClose, lang, setLang, savedProfile, onNewRoutine, onR
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <span style={{ fontSize: 12, color: muted, flex: 1 }}>¿Seguro?</span>
             <button onClick={() => { onClearAll(); onClose(); }} style={{
-              background: "#c0392b", border: "none", borderRadius: 8, padding: "7px 14px",
+              background: "#c0392b", border: "none", borderRadius: 100, padding: "7px 16px",
               color: "#fff", fontSize: 12, cursor: "pointer", fontFamily: "inherit"
             }}>Sí, borrar</button>
             <button onClick={() => setConfirmClear(false)} style={{
-              background: "transparent", border: `1px solid ${border}`, borderRadius: 8,
-              padding: "7px 14px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit"
+              background: "transparent", border: `1px solid ${border}`, borderRadius: 100,
+              padding: "7px 16px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit"
             }}>No</button>
           </div>
         )}
@@ -447,41 +449,40 @@ export default function App() {
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.8, color: muted, maxWidth: 440, marginBottom: 36 }}>{t.hero_desc}</p>
 
-        {/* Today's routine card (if exists) */}
-        {savedRoutine && (
+        {/* Card: visible siempre que haya perfil guardado */}
+        {savedProfile && (
           <div style={{ background: `${accent}10`, border: `1px solid ${accent}30`, borderRadius: 16, padding: "16px 20px", marginBottom: 20 }}>
             <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: accent, marginBottom: 4 }}>
               ● {lang === "es" ? "Rutina de hoy" : "Today's routine"}
             </div>
-            <div style={{ fontSize: 13, color: muted, marginBottom: 12 }}>
-              {fmtMins(savedRoutine.exercises.reduce((s, e) => s + e.duration, 0))} min · {savedRoutine.exercises.length} {lang === "es" ? "ejercicios" : "exercises"}
-            </div>
-            <div style={{ display: "flex", gap: 8 }}>
-              <button onClick={resumeSaved} style={{
-                background: accent, border: "none", borderRadius: 10, padding: "10px 20px",
-                color: "#fff", fontSize: 13, cursor: "pointer", fontFamily: "inherit", flex: 1
-              }}>▶ {lang === "es" ? "Continuar" : "Continue"}</button>
-              <button onClick={() => { clearRoutine(); setSavedRoutine(null); }} style={{
-                background: "transparent", border: `1px solid ${border}`, borderRadius: 10,
-                padding: "10px 14px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit"
-              }}>✕</button>
-            </div>
+            {savedRoutine ? (
+              <>
+                <div style={{ fontSize: 13, color: muted, marginBottom: 12 }}>
+                  {fmtMins(savedRoutine.exercises.reduce((s, e) => s + e.duration, 0))} min · {savedRoutine.exercises.length} {lang === "es" ? "ejercicios" : "exercises"}
+                </div>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button onClick={resumeSaved} style={{
+                    background: accent, border: "none", borderRadius: 100, padding: "10px 20px",
+                    color: "#fff", fontSize: 13, cursor: "pointer", fontFamily: "inherit", flex: 1
+                  }}>▶ {lang === "es" ? "Continuar" : "Continue"}</button>
+                  <button onClick={() => { clearRoutine(); setSavedRoutine(null); }} style={{
+                    background: "transparent", border: `1px solid ${border}`, borderRadius: 100,
+                    padding: "10px 14px", color: muted, fontSize: 12, cursor: "pointer", fontFamily: "inherit"
+                  }}>✕</button>
+                </div>
+              </>
+            ) : (
+              <button onClick={() => generateTodayRoutine(savedProfile)} style={{
+                width: "100%", background: accent, border: "none", borderRadius: 100, padding: "10px 20px",
+                color: "#fff", fontSize: 13, cursor: "pointer", fontFamily: "inherit"
+              }}>🔄 {t.settings_new_routine}</button>
+            )}
           </div>
         )}
 
-        {/* Adaptive CTA: profile exists → "Nueva rutina", no profile → "Personalizar" */}
+        {/* CTAs: "Personalizar" solo si no hay perfil aún */}
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 56 }}>
-          {savedProfile && !savedRoutine ? (
-            <button onClick={() => generateTodayRoutine(savedProfile)} style={{
-              background: accent, border: "none", borderRadius: 100, padding: "14px 30px",
-              color: "#fff", fontSize: 15, cursor: "pointer", fontFamily: "inherit",
-              boxShadow: `0 4px 24px ${accent}40`, letterSpacing: "0.02em", transition: "all 0.2s"
-            }}
-            onMouseEnter={e => e.currentTarget.style.transform = "translateY(-2px)"}
-            onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}>
-              🔄 {t.settings_new_routine}
-            </button>
-          ) : !savedRoutine ? (
+          {!savedProfile && (
             <button onClick={() => { setQuizStep(0); setAnswers({}); setScreen("quiz"); }} style={{
               background: accent, border: "none", borderRadius: 100, padding: "14px 30px",
               color: "#fff", fontSize: 15, cursor: "pointer", fontFamily: "inherit",
@@ -491,7 +492,7 @@ export default function App() {
             onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}>
               {t.btn_personalize}
             </button>
-          ) : null}
+          )}
           <button onClick={() => { setFilterCat(null); setScreen("library"); }} style={{
             background: "transparent", border: `1px solid ${border}`, borderRadius: 100,
             padding: "14px 28px", color: muted, fontSize: 15, cursor: "pointer", fontFamily: "inherit", transition: "all 0.2s"

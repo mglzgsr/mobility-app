@@ -212,6 +212,16 @@ export const QUESTIONS = [
         sub: { es: "Deporte de raqueta", en: "Racket sport" }
       },
       {
+        value: "hyrox",
+        label: { es: "Hyrox", en: "Hyrox" },
+        sub: { es: "Running funcional y estaciones de fuerza", en: "Functional running and strength stations" }
+      },
+      {
+        value: "judo",
+        label: { es: "Judo / Contacto", en: "Judo / Combat sports" },
+        sub: { es: "Artes marciales y deportes de contacto", en: "Martial arts and combat sports" }
+      },
+      {
         value: "ninguna",
         label: { es: "Ninguno", en: "None" },
         sub: { es: "Entrenamiento general o sin deporte específico", en: "General fitness or no specific sport" }

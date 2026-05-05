@@ -112,7 +112,7 @@ export const EXERCISES = [
   },
   {
     id: 4, icon: "🕊️", level: "intermediate", duration: 180, color: "#7b6fa0",
-    tags: ["cadera", "ciático", "corredor", "deportista", "glúteo"],
+    tags: ["cadera", "ciático", "corredor", "deportista", "glúteo", "judo"],
     contraindications: ["reemplazo_cadera"],
     youtubeId: "kdqyCSW1AN0",
     es: {
@@ -148,7 +148,7 @@ export const EXERCISES = [
   },
   {
     id: 5, icon: "🧎", level: "beginner", duration: 120, color: "#5b8fc4",
-    tags: ["sedentario", "psoas", "lumbar", "corredor", "cadera"],
+    tags: ["sedentario", "psoas", "lumbar", "corredor", "cadera", "hyrox"],
     contraindications: [],
     youtubeId: "mzPvzMivukw",
     es: {
@@ -184,7 +184,7 @@ export const EXERCISES = [
   },
   {
     id: 6, icon: "🔷", level: "intermediate", duration: 180, color: "#7b6fa0",
-    tags: ["cadera", "deportista", "corredor", "rotacion", "crossfit", "weightlifting"],
+    tags: ["cadera", "deportista", "corredor", "rotacion", "crossfit", "weightlifting", "hyrox", "judo"],
     contraindications: ["reemplazo_cadera"],
     youtubeId: "VYvMMw8z3rE",
     es: {
@@ -328,7 +328,7 @@ export const EXERCISES = [
   },
   {
     id: 10, icon: "🔄", level: "intermediate", duration: 120, color: "#5ba888",
-    tags: ["hombros", "deportista", "manguito", "nadador"],
+    tags: ["hombros", "deportista", "manguito", "nadador", "judo"],
     contraindications: ["luxacion_reciente"],
     youtubeId: "9BN8bRVq3Xo",
     es: {
@@ -364,7 +364,7 @@ export const EXERCISES = [
   },
   {
     id: 11, icon: "↔️", level: "beginner", duration: 60, color: "#b05c6e",
-    tags: ["cuello", "sedentario", "cefalea", "oficina", "estrés", "trapecio"],
+    tags: ["cuello", "sedentario", "cefalea", "oficina", "estrés", "trapecio", "judo"],
     contraindications: [],
     youtubeId: "t-1Z2ZYpmt0",
     es: {
@@ -400,7 +400,7 @@ export const EXERCISES = [
   },
   {
     id: 12, icon: "🫅", level: "beginner", duration: 60, color: "#5b8fc4",
-    tags: ["cuello", "sedentario", "oficina", "hernia_cervical", "postura"],
+    tags: ["cuello", "sedentario", "oficina", "hernia_cervical", "postura", "judo"],
     contraindications: [],
     youtubeId: "vhFGQxDVzF8",
     es: {
@@ -436,7 +436,7 @@ export const EXERCISES = [
   },
   {
     id: 13, icon: "👀", level: "beginner", duration: 60, color: "#6a9e5b",
-    tags: ["cuello", "movilidad_activa", "oficina", "sedentario"],
+    tags: ["cuello", "movilidad_activa", "oficina", "sedentario", "judo"],
     contraindications: ["vértigo_severo"],
     youtubeId: "PruXF-NE2zI",
     es: {
@@ -616,7 +616,7 @@ export const EXERCISES = [
   },
   {
     id: 18, icon: "🐕", level: "beginner", duration: 90, color: "#c47c3e",
-    tags: ["cadena_posterior", "calentamiento", "hombros", "isquiotibiales", "yoga"],
+    tags: ["cadena_posterior", "calentamiento", "hombros", "isquiotibiales", "yoga", "hyrox"],
     contraindications: ["tunel_carpiano_severo"],
     youtubeId: "Y0GDgQqt-bA",
     es: {
@@ -796,7 +796,7 @@ export const EXERCISES = [
   },
   {
     id: 23, icon: "📐", level: "intermediate", duration: 120, color: "#5ba888",
-    tags: ["lumbar", "lateral", "corredor", "deportista", "columna"],
+    tags: ["lumbar", "lateral", "corredor", "deportista", "columna", "judo", "hyrox"],
     contraindications: [],
     youtubeId: "sJCR9AZNjjY",
     es: {
@@ -834,7 +834,7 @@ export const EXERCISES = [
   // ─── CROSSFIT / WEIGHTLIFTING ─────────────────────────────────────────────
   {
     id: 24, icon: "🦶", level: "beginner", duration: 90, color: "#5ba888",
-    tags: ["crossfit", "weightlifting", "tobillo", "squat", "corredor", "deportista"],
+    tags: ["crossfit", "weightlifting", "tobillo", "squat", "corredor", "deportista", "hyrox"],
     contraindications: [],
     youtubeId: "77iX2a1BqOk",
     es: {
@@ -1454,7 +1454,7 @@ export const EXERCISES = [
   // ─── RUNNING ──────────────────────────────────────────────────────────────
   {
     id: 41, icon: "🦵", level: "beginner", duration: 60, color: "#5ba888",
-    tags: ["corredor", "tobillo", "pantorrilla", "calentamiento", "cadena_posterior"],
+    tags: ["corredor", "tobillo", "pantorrilla", "calentamiento", "cadena_posterior", "hyrox"],
     contraindications: [],
     youtubeId: "i1eJqJ3v3lQ",
     es: {
@@ -1526,7 +1526,7 @@ export const EXERCISES = [
   },
   {
     id: 43, icon: "🔺", level: "beginner", duration: 90, color: "#7b6fa0",
-    tags: ["corredor", "cadera", "ciático", "piriforme", "lumbar"],
+    tags: ["corredor", "cadera", "ciático", "piriforme", "lumbar", "hyrox", "judo"],
     contraindications: [],
     youtubeId: "-g0nuyTHMrI",
     es: {
@@ -1562,7 +1562,7 @@ export const EXERCISES = [
   },
   {
     id: 44, icon: "🏋️", level: "beginner", duration: 60, color: "#5b8fc4",
-    tags: ["corredor", "cadera", "flexor_cadera", "lumbar", "sedentario"],
+    tags: ["corredor", "cadera", "flexor_cadera", "lumbar", "sedentario", "hyrox", "judo"],
     contraindications: [],
     youtubeId: "tsGPYSQbZx4",
     es: {
@@ -1600,7 +1600,7 @@ export const EXERCISES = [
   // ─── PÁDEL ──────────────────────────────────────────────────────────────────
   {
     id: 45, icon: "🔄", level: "beginner", duration: 90, color: "#5ba888",
-    tags: ["padel", "columna", "movilidad_toracica", "crossfit", "overhead", "deportista"],
+    tags: ["padel", "columna", "movilidad_toracica", "crossfit", "overhead", "deportista", "hyrox"],
     contraindications: [],
     youtubeId: "snzLuyYgbVI",
     es: {
@@ -1672,7 +1672,7 @@ export const EXERCISES = [
   },
   {
     id: 47, icon: "↔️", level: "beginner", duration: 90, color: "#7b6fa0",
-    tags: ["padel", "cadera", "aductores", "movilidad_lateral", "deportista", "corredor"],
+    tags: ["padel", "cadera", "aductores", "movilidad_lateral", "deportista", "corredor", "judo", "hyrox"],
     contraindications: [],
     youtubeId: "nsHxDciEuOk",
     es: {
