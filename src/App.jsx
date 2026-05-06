@@ -185,7 +185,7 @@ function SettingsModal({ onClose, lang, setLang, savedProfile, onNewRoutine, onR
           : { top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 380, borderRadius: 20 }
         ),
         background: "#111f18", border: `1px solid ${border}`,
-        padding: "24px 24px 32px", fontFamily: "'Palatino Linotype', Palatino, serif"
+        padding: "24px 24px 32px", fontFamily: "'DM Sans', sans-serif"
       }}>
         {/* Handle bar (mobile) */}
         {isMobile && <div style={{ width: 36, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.15)", margin: "0 auto 20px" }}/>}
@@ -439,7 +439,7 @@ export default function App() {
 
   // ── HOME ───────────────────────────────────────────────────────────────────
   if (screen === "home") return (
-    <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", overflow: "hidden", position: "relative" }}>
+    <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'DM Sans', sans-serif", overflow: "hidden", position: "relative" }}>
       {settingsBtn}{settingsModal}
       <div style={{ position: "fixed", top: 0, right: 0, bottom: 0, left: 0, pointerEvents: "none" }}>
         <div style={{ position: "absolute", top: "-15%", left: "-5%", width: "60vw", height: "60vw", borderRadius: "50%", background: "radial-gradient(circle, rgba(91,168,136,0.08) 0%, transparent 70%)" }}/>
@@ -450,7 +450,7 @@ export default function App() {
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: accent, display: "inline-block" }}/>
           {t.tag}
         </div>
-        <h1 style={{ fontSize: "clamp(2.2rem,8vw,3.8rem)", fontWeight: 400, lineHeight: 1.05, margin: "0 0 18px", letterSpacing: "-0.02em" }}>
+        <h1 style={{ fontSize: "clamp(2.2rem,8vw,3.8rem)", fontWeight: 400, lineHeight: 1.05, margin: "0 0 18px", letterSpacing: "-0.02em", fontFamily: "'Cormorant Garamond', serif" }}>
           {t.hero_title1}<br/><em style={{ color: accent, fontStyle: "italic" }}>{t.hero_title2}</em>
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.8, color: muted, maxWidth: 440, marginBottom: 36 }}>{t.hero_desc}</p>
@@ -540,7 +540,7 @@ export default function App() {
 
     if (isMobile) {
       return (
-        <div style={{ height: "100dvh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+        <div style={{ height: "100dvh", background: bg, color: text, fontFamily: "'DM Sans', sans-serif", display: "flex", flexDirection: "column", overflow: "hidden" }}>
           {settingsBtn}{settingsModal}
           <div style={{ height: 3, background: "rgba(255,255,255,0.06)", flexShrink: 0 }}>
             <div style={{ height: "100%", width: `${(quizStep / QUESTIONS.length) * 100}%`, background: accent, transition: "width 0.4s", borderRadius: 2 }}/>
@@ -554,7 +554,7 @@ export default function App() {
                 <span style={{ fontSize: 12, color: muted }}>{quizStep + 1} / {QUESTIONS.length}</span>
               </div>
               <div style={{ fontSize: 30, marginBottom: 10 }}>{q.icon}</div>
-              <h2 style={{ fontSize: "clamp(1.1rem,5vw,1.5rem)", fontWeight: 400, margin: "0 0 6px", lineHeight: 1.3 }}>{q.question[lang]}</h2>
+              <h2 style={{ fontSize: "clamp(1.1rem,5vw,1.5rem)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, margin: "0 0 6px", lineHeight: 1.3 }}>{q.question[lang]}</h2>
               {q.multi && <p style={{ fontSize: 12, color: muted, margin: "0 0 16px", letterSpacing: "0.05em" }}>{t.multi_hint}</p>}
               {!q.multi && <div style={{ height: 16 }}/>}
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -591,7 +591,7 @@ export default function App() {
 
     // Desktop: natural scroll layout
     return (
-      <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif" }}>
+      <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'DM Sans', sans-serif" }}>
         {settingsBtn}{settingsModal}
         <div style={{ height: 3, background: "rgba(255,255,255,0.06)" }}>
           <div style={{ height: "100%", width: `${(quizStep / QUESTIONS.length) * 100}%`, background: accent, transition: "width 0.4s", borderRadius: 2 }}/>
@@ -604,7 +604,7 @@ export default function App() {
             <span style={{ fontSize: 12, color: muted }}>{quizStep + 1} / {QUESTIONS.length}</span>
           </div>
           <div style={{ fontSize: 36, marginBottom: 14 }}>{q.icon}</div>
-          <h2 style={{ fontSize: "clamp(1.2rem,3vw,1.7rem)", fontWeight: 400, margin: "0 0 6px", lineHeight: 1.3 }}>{q.question[lang]}</h2>
+          <h2 style={{ fontSize: "clamp(1.2rem,3vw,1.7rem)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, margin: "0 0 6px", lineHeight: 1.3 }}>{q.question[lang]}</h2>
           {q.multi && <p style={{ fontSize: 12, color: muted, margin: "0 0 28px", letterSpacing: "0.05em" }}>{t.multi_hint}</p>}
           {!q.multi && <div style={{ height: 24 }}/>}
           <div style={{ display: "flex", flexDirection: "column", gap: 9, marginBottom: 32 }}>
@@ -637,7 +637,7 @@ export default function App() {
 
   // ── LIST (results or library) ──────────────────────────────────────────────
   if (screen === "results" || screen === "library") return (
-    <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif" }}>
+    <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'DM Sans', sans-serif" }}>
       {settingsBtn}{settingsModal}
       <div style={{ maxWidth: 700, margin: "0 auto", padding: isMobile ? "0 14px" : "0 20px" }}>
         <div style={{ paddingTop: isMobile ? 24 : 36, paddingBottom: 20 }}>
@@ -645,7 +645,7 @@ export default function App() {
           {screen === "results" ? (
             <>
               <div style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: accent, marginBottom: 8 }}>{t.results_tag}</div>
-              <h2 style={{ fontSize: "clamp(1.4rem,5vw,2rem)", fontWeight: 400, margin: "0 0 8px" }}>
+              <h2 style={{ fontSize: "clamp(1.4rem,5vw,2rem)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, margin: "0 0 8px" }}>
                 <em style={{ color: accent, fontStyle: "italic" }}>
                   {fmtMins(recommended.reduce((s, e) => s + e.duration, 0))}
                 </em>{" "}{t.results_duration}
@@ -666,7 +666,7 @@ export default function App() {
             </>
           ) : (
             <>
-              <h2 style={{ fontSize: "clamp(1.4rem,5vw,2rem)", fontWeight: 400, margin: "0 0 20px" }}>{t.library_title}</h2>
+              <h2 style={{ fontSize: "clamp(1.4rem,5vw,2rem)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, margin: "0 0 20px" }}>{t.library_title}</h2>
               <div style={{ display: "flex", gap: 7, flexWrap: "wrap" }}>
                 {[null, ...CATEGORY_KEYS].map(cat => {
                   const active = filterCat === cat;
@@ -719,10 +719,10 @@ export default function App() {
     if (routineComplete) {
       const totalMins = fmtMins(recommended.reduce((s, e) => s + e.duration, 0));
       return (
-        <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 24px", textAlign: "center" }}>
+        <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'DM Sans', sans-serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 24px", textAlign: "center" }}>
           {settingsBtn}{settingsModal}
           <div style={{ fontSize: 72, marginBottom: 24 }}>🎉</div>
-          <h2 style={{ fontSize: "clamp(1.4rem,5vw,2rem)", fontWeight: 400, margin: "0 0 12px" }}>{t.run_complete_title}</h2>
+          <h2 style={{ fontSize: "clamp(1.4rem,5vw,2rem)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, margin: "0 0 12px" }}>{t.run_complete_title}</h2>
           <p style={{ fontSize: 13, color: muted, marginBottom: 4 }}>{t.run_complete_time}</p>
           <p style={{ fontSize: "clamp(1.5rem,4vw,2.2rem)", color: accent, fontStyle: "italic", marginBottom: 36 }}>{totalMins} min</p>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" }}>
@@ -739,7 +739,7 @@ export default function App() {
     const total = recommended.length;
 
     return (
-      <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column" }}>
+      <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'DM Sans', sans-serif", display: "flex", flexDirection: "column" }}>
         {settingsBtn}{settingsModal}
 
         {/* Progress dots */}
@@ -767,7 +767,7 @@ export default function App() {
             <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
               <div style={{ fontSize: 44 }}>{ex.icon}</div>
               <div>
-                <h2 style={{ fontSize: "clamp(1.1rem,4vw,1.5rem)", fontWeight: 400, margin: "0 0 6px", lineHeight: 1.2 }}>{exl.name}</h2>
+                <h2 style={{ fontSize: "clamp(1.1rem,4vw,1.5rem)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, margin: "0 0 6px", lineHeight: 1.2 }}>{exl.name}</h2>
                 <p style={{ fontSize: 12, color: muted, margin: 0, lineHeight: 1.5 }}>{exl.description}</p>
               </div>
             </div>
@@ -853,7 +853,7 @@ export default function App() {
     const timerPct = (timerLeft / ex.duration) * 100;
 
     return (
-      <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif" }}>
+      <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'DM Sans', sans-serif" }}>
         {settingsBtn}{settingsModal}
         <div style={{ maxWidth: 660, margin: "0 auto", padding: isMobile ? "0 14px" : "0 20px" }}>
           <div style={{ paddingTop: isMobile ? 20 : 32, paddingBottom: 16 }}>
@@ -866,7 +866,7 @@ export default function App() {
               <div style={{ fontSize: 40 }}>{ex.icon}</div>
               <div>
                 <div style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: ex.color, marginBottom: 4 }}>{exl.category}</div>
-                <h2 style={{ fontSize: "clamp(1.2rem,4vw,1.7rem)", fontWeight: 400, margin: "0 0 8px", lineHeight: 1.2 }}>{exl.name}</h2>
+                <h2 style={{ fontSize: "clamp(1.2rem,4vw,1.7rem)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, margin: "0 0 8px", lineHeight: 1.2 }}>{exl.name}</h2>
                 <p style={{ fontSize: 13, color: muted, margin: "0 0 12px", lineHeight: 1.6 }}>{exl.description}</p>
                 <div style={{ display: "flex", gap: 7, flexWrap: "wrap" }}>
                   <span style={{ fontSize: 10, color: ex.color, background: `${ex.color}15`, padding: "3px 10px", borderRadius: 100 }}>{levelLabel(ex)}</span>
@@ -988,7 +988,7 @@ export default function App() {
     const exl = ex[lang];
     const isLast = guideStep === exl.steps.length - 1;
     return (
-      <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column" }}>
+      <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'DM Sans', sans-serif", display: "flex", flexDirection: "column" }}>
         {settingsBtn}{settingsModal}
         <div style={{ display: "flex" }}>
           {exl.steps.map((_, i) => (
