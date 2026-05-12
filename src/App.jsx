@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { EXERCISES, catLabel } from "./data/exercises";
 import { S, QUESTIONS, CATEGORY_KEYS } from "./data/strings";
 
@@ -421,6 +422,7 @@ export default function App() {
   const levelLabel = (ex) => t[`level_${ex.level}`];
 
   // ── SHARED UI ─────────────────────────────────────────────────────────────
+  const analytics = <Analytics />;
   const settingsBtn = (
     <SettingsButton onClick={() => setShowSettings(true)} muted={muted} border={border} accent={accent} />
   );
@@ -440,7 +442,7 @@ export default function App() {
   // ── HOME ───────────────────────────────────────────────────────────────────
   if (screen === "home") return (
     <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", overflow: "hidden", position: "relative" }}>
-      {settingsBtn}{settingsModal}
+      {analytics}{settingsBtn}{settingsModal}
       <div style={{ position: "fixed", top: 0, right: 0, bottom: 0, left: 0, pointerEvents: "none" }}>
         <div style={{ position: "absolute", top: "-15%", left: "-5%", width: "60vw", height: "60vw", borderRadius: "50%", background: "radial-gradient(circle, rgba(91,168,136,0.08) 0%, transparent 70%)" }}/>
         <div style={{ position: "absolute", bottom: "-10%", right: "-5%", width: "45vw", height: "45vw", borderRadius: "50%", background: "radial-gradient(circle, rgba(123,111,160,0.06) 0%, transparent 70%)" }}/>
@@ -541,7 +543,7 @@ export default function App() {
     if (isMobile) {
       return (
         <div style={{ height: "100dvh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column", overflow: "hidden" }}>
-          {settingsBtn}{settingsModal}
+          {analytics}{settingsBtn}{settingsModal}
           <div style={{ height: 3, background: "rgba(255,255,255,0.06)", flexShrink: 0 }}>
             <div style={{ height: "100%", width: `${(quizStep / QUESTIONS.length) * 100}%`, background: accent, transition: "width 0.4s", borderRadius: 2 }}/>
           </div>
@@ -592,7 +594,7 @@ export default function App() {
     // Desktop: natural scroll layout
     return (
       <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif" }}>
-        {settingsBtn}{settingsModal}
+        {analytics}{settingsBtn}{settingsModal}
         <div style={{ height: 3, background: "rgba(255,255,255,0.06)" }}>
           <div style={{ height: "100%", width: `${(quizStep / QUESTIONS.length) * 100}%`, background: accent, transition: "width 0.4s", borderRadius: 2 }}/>
         </div>
@@ -638,7 +640,7 @@ export default function App() {
   // ── LIST (results or library) ──────────────────────────────────────────────
   if (screen === "results" || screen === "library") return (
     <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif" }}>
-      {settingsBtn}{settingsModal}
+      {analytics}{settingsBtn}{settingsModal}
       <div style={{ maxWidth: 700, margin: "0 auto", padding: isMobile ? "0 14px" : "0 20px" }}>
         <div style={{ paddingTop: isMobile ? 24 : 36, paddingBottom: 20 }}>
           <button onClick={() => setScreen("home")} style={{ background: "none", border: "none", color: muted, cursor: "pointer", fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "inherit", padding: 0, marginBottom: 24 }}>{t.back_home}</button>
@@ -720,7 +722,7 @@ export default function App() {
       const totalMins = fmtMins(recommended.reduce((s, e) => s + e.duration, 0));
       return (
         <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 24px", textAlign: "center" }}>
-          {settingsBtn}{settingsModal}
+          {analytics}{settingsBtn}{settingsModal}
           <div style={{ fontSize: 72, marginBottom: 24 }}>🎉</div>
           <h2 style={{ fontSize: "clamp(1.4rem,5vw,2rem)", fontWeight: 400, margin: "0 0 12px" }}>{t.run_complete_title}</h2>
           <p style={{ fontSize: 13, color: muted, marginBottom: 4 }}>{t.run_complete_time}</p>
@@ -740,7 +742,7 @@ export default function App() {
 
     return (
       <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column" }}>
-        {settingsBtn}{settingsModal}
+        {analytics}{settingsBtn}{settingsModal}
 
         {/* Progress dots */}
         <div style={{ display: "flex", gap: 5, padding: "20px 24px 0", justifyContent: "center" }}>
@@ -854,7 +856,7 @@ export default function App() {
 
     return (
       <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif" }}>
-        {settingsBtn}{settingsModal}
+        {analytics}{settingsBtn}{settingsModal}
         <div style={{ maxWidth: 660, margin: "0 auto", padding: isMobile ? "0 14px" : "0 20px" }}>
           <div style={{ paddingTop: isMobile ? 20 : 32, paddingBottom: 16 }}>
             <button onClick={() => setScreen(recommended.length ? "results" : "library")} style={{ background: "none", border: "none", color: muted, cursor: "pointer", fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "inherit", padding: 0 }}>{t.back_exercise}</button>
@@ -989,7 +991,7 @@ export default function App() {
     const isLast = guideStep === exl.steps.length - 1;
     return (
       <div style={{ minHeight: "100vh", background: bg, color: text, fontFamily: "'Palatino Linotype', Palatino, serif", display: "flex", flexDirection: "column" }}>
-        {settingsBtn}{settingsModal}
+        {analytics}{settingsBtn}{settingsModal}
         <div style={{ display: "flex" }}>
           {exl.steps.map((_, i) => (
             <div key={i} style={{ height: 3, flex: 1, background: i <= guideStep ? ex.color : "rgba(255,255,255,0.07)", transition: "background 0.4s" }}/>
